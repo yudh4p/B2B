@@ -1,0 +1,608 @@
+﻿
+@{
+    ViewBag.Title = "User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@model B2B_SCM.Models.Custom
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="mt-0 header-title">Master User</h4>
+                    <div style="text-align: right">
+                        <button type="button" class="btn btn-outline-secondary waves-effect waves-light" onclick="load_table()">Refresh</button>
+                        <button type="button" class="btn btn-outline-primary waves-effect waves-light" onclick="OnClickAdd()">New User</button>
+                    </div>
+                    <br />
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered dt-responsive nowrap" id="table_data" style="width: 100%">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>User ID</th>
+                                    <th>Fullname</th>
+                                    <th>Acct. Type</th>
+                                    <th>Vendor</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Locked</th>
+                                    <th>Active</th>
+                                    <th>Updated</th>
+                                    <th>Updated Date</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+</div>
+
+
+
+@using (Html.BeginForm("submit_new_user", "master", FormMethod.Post))
+{
+    <div id="modal_user" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Body -->
+                <div class="modal-header">
+                    <h4 class="modal-title">New User Login</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                @*<label class="form-label font-bold header-title">Account Type</label>*@
+                                <label class="mb-3 d-block font-14 bold">Account Type</label>
+                                <div class="form-check-inline">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radioScm" onchange="OnChangeAT()" name="AccountType" value="SCM"> SCM
+                                    </label>
+                                </div>
+                                <div class="form-check-inline">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radioFinance" onchange="OnChangeAT()" name="AccountType" value="FINANCE"> FINANCE
+                                    </label>
+                                </div>
+                                <div class="form-check-inline">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radioSeller" onchange="OnChangeAT()" name="AccountType" value="SELLER"> SELLER
+                                    </label>
+                                </div>
+                                <div class="form-check-inline">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" id="radioShipper" onchange="OnChangeAT()" name="AccountType" value="SHIPPER"> SHIPPER
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="rowSeller">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label">Seller</label>
+                                @Html.DropDownListFor(model => model.au_sellercode, Model.au_sellercode_list, new { @class = "form-control", @id = "au_sellercode" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="rowShipper">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label">Shipper</label>
+                                @Html.DropDownListFor(model => model.au_shippercode, Model.au_shippercode_list, new { @class = "form-control", @id = "au_shippercode" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">User ID (For Login)</label>
+                                @Html.TextBoxFor(model => model.Usr, new { @class = "form-control", @id = "Usr" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Fullname</label>
+                                @Html.TextBoxFor(model => model.Fn, new { @class = "form-control", @id = "Fn" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @id = "Email" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Phone</label>
+                                @Html.TextBoxFor(model => model.Phone, new { @class = "form-control", @id = "Phone" })
+                            </div>
+                        </div>
+                    </div>
+                    <h6 style="color: red">*Please make sure the email is active and valid</h6>
+                </div>
+
+                <div class="modal-footer">
+                    <div style="text-align: right">
+                        <a href="#" class="btn btn-outline-danger waves-effect waves-light" data-bs-dismiss="modal">Cancel</a>
+                        <button type="submit" class="btn btn-outline-primary waves-effect waves-light" id="btnSubmit">Submit</button>
+                    </div>
+                </div>
+                <!-- End Modal Body -->
+            </div>
+        </div>
+    </div>
+}
+
+
+@*@using (Html.BeginForm("submit_edit_user", "master", FormMethod.Post))
+    {*@
+<div id="modal_edit_user" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Body -->
+            <div class="modal-header">
+                <h4 class="modal-title" id="txtHeaderPopup">New User Login</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="cursor: not-allowed">
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label class="mb-3 d-block font-14 bold">Account Type</label>
+                            <div class="form-check-inline">
+                                <label class="form-check-label" style="cursor: not-allowed">
+                                    <input type="radio" class="form-check-input" id="radioScmE" name="AccountTypeE" value="SCM" disabled style="cursor: not-allowed"> SCM
+                                </label>
+                            </div>
+                            <div class="form-check-inline">
+                                <label class="form-check-label" style="cursor: not-allowed">
+                                    <input type="radio" class="form-check-input" id="radioFinanceE" name="AccountTypeE" value="FINANCE" disabled style="cursor: not-allowed"> FINANCE
+                                </label>
+                            </div>
+                            <div class="form-check-inline">
+                                <label class="form-check-label" style="cursor: not-allowed">
+                                    <input type="radio" class="form-check-input" id="radioSellerE" name="AccountTypeE" value="SELLER" disabled style="cursor: not-allowed"> SELLER
+                                </label>
+                            </div>
+                            <div class="form-check-inline">
+                                <label class="form-check-label" style="cursor: not-allowed">
+                                    <input type="radio" class="form-check-input" id="radioShipperE" name="AccountTypeE" value="SHIPPER" disabled style="cursor: not-allowed"> SHIPPER
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="rowSellerE">
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label class="form-label">Seller</label>
+                            @Html.DropDownListFor(model => model.au_sellercodeE, Model.au_sellercode_list, new { @class = "form-control", @id = "au_sellercodeE" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="rowShipperE">
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label class="form-label">Shipper</label>
+                            @Html.DropDownListFor(model => model.au_shippercodeE, Model.au_shippercode_list, new { @class = "form-control", @id = "au_shippercodeE" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">User ID (For Login)</label>
+                            @Html.TextBoxFor(model => model.UsrE, new { @class = "form-control", @id = "UsrE", @readonly = "readonly", @style = "background-color: #dee2e6" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Fullname</label>
+                            @Html.TextBoxFor(model => model.FnE, new { @class = "form-control", @id = "FnE" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            @Html.TextBoxFor(model => model.EmailE, new { @class = "form-control", @id = "EmailE" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Phone</label>
+                            @Html.TextBoxFor(model => model.PhoneE, new { @class = "form-control", @id = "PhoneE" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label class="mb-3 d-block font-14 bold">Lock Status</label>
+                            <div class="form-check-inline">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" id="radiolock1" name="rbLock" value="0"> Not Locked
+                                </label>
+                            </div>
+                            <div class="form-check-inline">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" id="radiolock2" name="rbLock" value="1"> Locked
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label class="mb-3 d-block font-14 bold">Active Status</label>
+                            <div class="form-check-inline">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" id="radioActive1" name="rbActive" value="1"> Active
+                                </label>
+                            </div>
+                            <div class="form-check-inline">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" id="radioActive2" name="rbActive" value="0"> Not Active
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h6 style="color: red">*Please make sure the email is active and valid</h6>
+            </div>
+
+            <div class="modal-footer">
+                <div style="text-align: right">
+                    <a href="#" class="btn btn-outline-danger waves-effect waves-light" data-bs-dismiss="modal">Cancel</a>
+                    @*<button type="button" class="btn btn-outline-secondary waves-effect waves-light" id="btnUnlockEdit">Unlock</button>
+                        <button type="button" class="btn btn-outline-warning waves-effect waves-light" id="btnActiveEdit">Deactive</button>*@
+                    <button type="button" class="btn btn-outline-warning waves-effect waves-light" id="btnReset" onclick="OnClickReset()">Reset Password</button>
+                    <button type="button" class="btn btn-outline-primary waves-effect waves-light" id="btnSubmitEdit" onclick="OnClickUpdate()">Submit</button>
+                </div>
+            </div>
+            <!-- End Modal Body -->
+        </div>
+    </div>
+</div>
+@*}*@
+
+
+<div id="modal_reset_password" class="modal fade" data-bs-keyboard="false" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border border-danger">
+            <div class="modal-header">
+                <h4 class="modal-title">Reset Password</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <input type="hidden" id="txtUser" name="txtUser">
+                        <div class="mb-3">
+                            <label class="form-label">New Password</label>
+                            <input type="password" id="txtNewPwd" class="form-control" placeholder="New Password" aria-label="New Password">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label class="form-label">Confirmation Password</label>
+                            <input type="password" id="txtCnfPwd" class="form-control" placeholder="Confirmation Password" aria-label="Confirmation Password">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div style="text-align: right">
+                            <a href="#" class="btn btn-outline-danger waves-effect waves-light" onclick="OnClickCancelResetPassword()">Cancel</a>
+                            <a href="#" class="btn btn-outline-primary waves-effect waves-light" onclick="OnClickSubmitResetPassword()">Submit</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts
+    {
+    <script>
+
+        $(document).ready(function () {
+            $("#au_sellercode").selectize();
+            $("#au_shippercode").selectize();
+            $("#au_sellercodeE").selectize();
+            $("#au_shippercodeE").selectize();
+            load_table();
+        });
+
+        function OnClickCancelResetPassword() {
+            document.getElementById('txtNewPwd').innerHTML = '';
+            document.getElementById('txtCnfPwd').innerHTML = '';
+            $('#modal_reset_password').modal('hide');
+        }
+
+        function OnClickSubmitResetPassword() {
+            var formData = new FormData();
+            formData.append("user", document.getElementById('txtUser').value);
+            formData.append("pwd1", document.getElementById('txtNewPwd').value);
+            formData.append("pwd2", document.getElementById('txtCnfPwd').value);
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("submit_reset_pwd", "master")',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (result) {
+                    if (result.Success) {
+                        Swal.fire(
+                            result.Message,
+                            '',
+                            'info'
+                        );
+                        load_table();
+                        $('#modal_reset_password').modal('hide');
+                    } else {
+                        Swal.fire(
+                            result.Message,
+                            '',
+                            'error'
+                        );
+                    }
+                }
+            });
+
+            document.getElementById('txtNewPwd').value = '';
+            document.getElementById('txtNewPwd').focus();
+            document.getElementById('txtCnfPwd').value = '';
+        }
+
+        function OnClickReset() {
+            document.getElementById('txtNewPwd').value = '';
+            document.getElementById('txtCnfPwd').value = '';
+            $('#modal_reset_password').modal('show');
+        }
+
+        function OnChangeAT() {
+            if (document.getElementById('radioSeller').checked) {
+                document.getElementById('rowSeller').style.display = 'block';
+                document.getElementById('rowShipper').style.display = 'none';
+            }
+            else if (document.getElementById('radioShipper').checked) {
+                document.getElementById('rowSeller').style.display = 'none';
+                document.getElementById('rowShipper').style.display = 'block';
+            }
+            else {
+                document.getElementById('rowSeller').style.display = 'none';
+                document.getElementById('rowShipper').style.display = 'none';
+            }
+        }
+
+        function OnClickAdd(usr) {
+            document.getElementById('Usr').value = '';
+            document.getElementById('Fn').value = '';
+            document.getElementById('Email').value = '';
+            document.getElementById('Phone').value = '';
+
+            $("#radioScm").prop("checked", false);
+            $("#radioFinance").prop("checked", false);
+            $("#radioSeller").prop("checked", false);
+            $("#radioShipper").prop("checked", false);
+
+            document.getElementById('rowSeller').style.display = 'none';
+            document.getElementById('rowShipper').style.display = 'none';
+
+            $('#modal_user').modal('show');
+        }
+
+        function OnClickEdit(usr) {
+            var data = { id: usr };
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("get_ms_user", "master")',
+                data: data,
+                success: function(result) {
+                    if (result.success) {
+                        document.getElementById('txtHeaderPopup').innerHTML = 'User - EDIT';
+
+                        document.getElementById('txtUser').value = result.user;
+                        document.getElementById('UsrE').value = result.user;
+                        document.getElementById('FnE').value = result.fullname;
+                        document.getElementById('EmailE').value = result.email;
+                        document.getElementById('PhoneE').value = result.phone;
+
+                        if (result.accounttype == "SCM") {
+                            $("#radioScmE").prop("checked", true);
+                        }
+                        else if (result.accounttype == "FINANCE") {
+                            $("#radioFinanceE").prop("checked", true);
+                        }
+                        else if (result.accounttype == "SELLER") {
+                            $("#radioSellerE").prop("checked", true);
+                        }
+                        else if (result.accounttype == "SHIPPER") {
+                            $("#radioShipperE").prop("checked", true);
+                        }
+
+                        if (result.locked == 'True') {
+                            $("#radiolock2").prop("checked", true);
+                        }
+                        else {
+                            $("#radiolock1").prop("checked", true);
+                        }
+
+                        if (result.active == 'True') {
+                            $("#radioActive1").prop("checked", true);
+                        }
+                        else {
+                            $("#radioActive2").prop("checked", true);
+                        }
+
+                        if (document.getElementById('radioSellerE').checked) {
+                            document.getElementById('rowSellerE').style.display = 'block';
+                            document.getElementById('rowShipperE').style.display = 'none';
+                        }
+                        else if (document.getElementById('radioShipperE').checked) {
+                            document.getElementById('rowSellerE').style.display = 'none';
+                            document.getElementById('rowShipperE').style.display = 'block';
+                        }
+                        else {
+                            document.getElementById('rowSellerE').style.display = 'none';
+                            document.getElementById('rowShipperE').style.display = 'none';
+                        }
+
+                    } else {
+
+                    }
+                }
+            });
+            $('#modal_edit_user').modal('show');
+            //modal_user
+        }
+
+        function load_table() {
+        var table = $('#table_data').DataTable();
+        table.destroy();
+        $('#table_data').DataTable({
+            "ajax": {
+                "url": '@Url.Action("load_ms_user", "master")',
+                "type": "GET",
+                "datatype": "json",
+                dataSrc: function(data) {
+                    return $.parseJSON(data.data);
+                }
+            },
+            "columns": [
+                    {
+                        "data": null, "autoWidth": true,
+                        mRender: function (data, type, row) {
+                            return '<span data-toggle="tooltip" title="Edit" style="cursor: pointer" onclick="OnClickEdit(\'' + row.USR + '\');"><i class="dripicons-document-edit"></i></span>';
+                        }
+                    },
+                    {
+                        "data": "USR", "autoWidth": true,
+                    },
+                    {
+                        "data": "FN", "autoWidth": true,
+                    },
+                    {
+                        "data": "ACCOUNTTYPE", "autoWidth": true,
+                },
+                {
+                    "data": "VENDORNAME", "autoWidth": true,
+                },
+                    {
+                        "data": "EMAIL", "autoWidth": true,
+                    },
+                    {
+                        "data": "PHONE", "autoWidth": true,
+                    },
+
+                {
+                    "data": "LOCKED", "autoWidth": true,
+                    mRender: function (data, type, row) {
+                        if (row.LOCKED == false) {
+                            return '<span style="color: blue"> No </span>';
+                        }
+                        else {
+                            return '<span style="color: red"> Yes </span>';
+                        }
+                    }
+                },
+
+                {
+                    "data": "ACTIVE", "autoWidth": true,
+                    mRender: function (data, type, row) {
+                        if (row.ACTIVE == true) {
+                            return '<span style="color: blue"> Yes </span>';
+                        }
+                        else {
+                            return '<span style="color: red"> No </span>';
+                        }
+                    }
+                },
+                    {
+                        "data": "UPDBY", "autoWidth": true,
+                    },
+                    {
+                        "data": "UPDDATE", "autoWidth": true,
+                    },
+                ],
+                "bLengthChange": false,
+                "bFilter": true,
+                "order": [[1, "asc"]],
+            });
+            return true;
+        }
+
+        function OnClickUpdate() {
+            var formData = new FormData();
+            formData.append("sellercode", document.getElementById('au_sellercodeE').value);
+            formData.append("shippercode", document.getElementById('au_shippercodeE').value);
+            formData.append("user", document.getElementById('UsrE').value);
+            formData.append("fn", document.getElementById('FnE').value);
+            formData.append("email", document.getElementById('EmailE').value);
+            formData.append("phone", document.getElementById('PhoneE').value);
+
+            if (document.getElementById('radiolock1').checked == true) {
+                formData.append("lock", "0");
+            }
+            else {
+                formData.append("lock", "1");
+            }
+
+            if (document.getElementById('radioActive1').checked == true) {
+                formData.append("active", "1");
+            }
+            else {
+                formData.append("active", "0");
+            }
+
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("submit_edit_user", "master")',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (result) {
+                    if (result.Success) {
+                        Swal.fire(
+                            result.Message,
+                            '',
+                            'info'
+                        );
+                    } else {
+                        Swal.fire(
+                            result.Message,
+                            '',
+                            'error'
+                        );
+                    }
+                }
+            });
+            load_table();
+            $('#modal_edit_user').modal('hide');
+        }
+
+    </script>
+
+}

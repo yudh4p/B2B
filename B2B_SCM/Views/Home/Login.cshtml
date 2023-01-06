@@ -1,0 +1,267 @@
+﻿@{
+    ViewData["Title"] = "B2B - Login";
+    Layout = null;
+}
+
+@model B2B_SCM.Models.Custom
+
+<!-- Created by : Yudha Permana
+Created on : Aug 2022
+https://www.linkedin.com/in/yudha-permana-60277396/ -->
+
+<!doctype html>
+<html class="no-js " lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
+
+    <title>:: B2B Document Controlling - Login ::</title>
+    <!-- Favicon-->
+    <link rel="icon" href="~/icon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="~/assets/login/bootstrap/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="~/assets/login/SweetAlert.css" />
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="~/assets/login/css/main.css">
+    <link rel="stylesheet" href="~/assets/login/css/color_skins.css">
+    <script type="text/javascript">
+        function OnLoad() {
+            document.getElementById('username').focus();
+        }
+    </script>
+</head>
+<body class="theme-black" onload="OnLoad()">
+
+    @*@using (Html.BeginForm("login", "home", FormMethod.Post))
+    {*@
+        <form action="~/home/login" method="post">
+            <div class="authentication block">
+                <div class="container">
+                    <div class="col-md-12 content-center">
+
+                        <div class="row clearfix">
+                            <div class="col-lg-12 col-md-12">
+
+                                <div class="card">
+                                    <div class="body">
+                                        <div id="demo2" class="carousel slide" data-ride="carousel">
+                                            <!-- Indicators -->
+                                            <ul class="carousel-indicators">
+                                                <li data-target="#demo2" data-slide-to="0" class="active"></li>
+                                                <li data-target="#demo2" data-slide-to="1" class=""></li>
+                                                <li data-target="#demo2" data-slide-to="2" class=""></li>
+                                            </ul>
+                                            <!-- Wrapper for slides -->
+                                            <div class="carousel-inner">
+                                                <div class="carousel-item active">
+                                                    <img src="/assets/img/caraousel/1.jpg" class="img-fluid" alt="">
+                                                    <div class="carousel-caption">
+                                                        <h3></h3>
+                                                        <p></p>
+                                                    </div>
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <img src="/assets/img/caraousel/2.jpg" class="img-fluid" alt="">
+                                                    <div class="carousel-caption">
+                                                        <h3 style="color:gray">Realizing Our Vision</h3>
+                                                        <p style="background-color:gray"> We are one step closer to realizing our vision of becoming the leading flour producer in Indonesia and help make Indonesia healthier</p>
+                                                    </div>
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <img src="/assets/img/caraousel/3.jpg" class="img-fluid" alt="">
+                                                    <div class="carousel-caption">
+                                                        <h3></h3>
+                                                        <p></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Controls -->
+                                            <!-- Left and right controls -->
+                                            <a class="carousel-control-prev" href="#demo2" data-slide="prev"><span class="carousel-control-prev-icon"></span></a>
+                                            <a class="carousel-control-next" href="#demo2" data-slide="next"><span class="carousel-control-next-icon"></span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-12">
+                                <div class="company_detail">
+                                    <h4 class="logo">SCM Document Controlling Bungasari</h4>
+                                    <h3><strong>Portal B2B</strong> from SCM, organized by MIS Bungasari</h3>
+                                    <p>With this portal, shipper, seller, and SCM can control and updated document real time</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 col-md-12 offset-lg-1">
+                                <div class="card-plain">
+                                    <div id="divLogin">
+                                        <div class="header">
+                                        </div>
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(model => model.username, new { @class = "form-control", @id = "username", @placeholder = "Enter your username" })
+                                        </div>
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(model => model.password, new { @class = "form-control", @id = "password", @type = "password", @placeholder = "Enter your password" })
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="form-check float-left">
+                                                <input type="checkbox" class="form-check-input" id="checkbox-show" onclick="ShowHidePwd()">
+                                                <label class="form-check-label" for="checkbox-show" onclick="ShowHidePwd()">Show Password</label>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="footer">
+                                            <button type="submit" class="btn btn-primary btn-round btn-block" onclick="OnLogin()">SIGN IN</button>
+                                            <a href="#" onclick="OnUnlock()">Unlock Account</a>
+                                        </div>
+                                    </div>
+                                    <div id="divUnlock">
+                                        <div class="header">
+                                            <h5>Unlock account?</h5>
+                                            <span>Enter your username below to unlock your account.</span>
+                                        </div>
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(model => model.usernameU, new { @class = "form-control", @id = "usernameU", @placeholder = "Enter your username" })
+                                        </div>
+                                        <br />
+                                        <div class="footer">
+                                            <button type="button" class="btn btn-primary btn-round btn-block" onclick="OnSubmitUnlock()">Submit</button>
+                                            <a href="#" onclick="OnBackToLogin()">Back to login</a>
+                                        </div>
+                                    </div>
+
+                                   
+                                    @*<div class="checkbox align-left">
+            <input id="terms" type="checkbox" onclick="ShowHidePwd()">
+            <label for="terms">Show Password</label>
+        </div>*@
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    @*}*@
+    <!-- Jquery Core Js -->
+    <script src="~/assets/login/bundles/libscripts.bundle.js"></script>
+    <script src="~/assets/login/bundles/vendorscripts.bundle.js"></script> <!-- Lib Scripts Plugin Js -->
+    <script src="~/assets/login/SweetAlert.js"></script> <!-- SweetAlert Plugin Js -->
+
+
+    <script src="~/assets/login/js/jquery.blockUI.js"></script>
+    <script>
+        $(function() {
+            var msg = '@TempData["Message"]';
+            if (msg != '') {
+                if (msg.includes('Error')) {
+                    Swal.fire(
+                        msg,
+                        '',
+                        'error'
+                    );
+                }
+                else if (msg.includes('Warning')) {
+                    Swal.fire(
+                        msg,
+                        '',
+                        'warning'
+                    );
+                }
+                else {
+                    Swal.fire(
+                        msg,
+                        '',
+                        'info'
+                    );
+                }
+            }
+        });
+
+        $(document).ready(function () {
+            document.getElementById('divLogin').style.display = 'block';
+            document.getElementById('divUnlock').style.display = 'none';
+        })
+
+        function OnUnlock() {
+            document.getElementById('usernameU').value = '';
+            document.getElementById('usernameU').focus();
+            document.getElementById('divLogin').style.display = 'none';
+            document.getElementById('divUnlock').style.display = 'block';
+        }
+
+        function OnBackToLogin() {
+            document.getElementById('username').focus();
+            document.getElementById('divLogin').style.display = 'block';
+            document.getElementById('divUnlock').style.display = 'none';
+        }
+
+        function OnLogin() {
+            $('div.block').block({
+                message: '<h1>Authentication ...</h1>',
+                css: { border: '3px solid #a00' }
+            });
+        }
+
+        function ShowHidePwd() {
+            var x = document.getElementById("password");
+            if (x.type === "password") {
+                x.type = "text";
+                document.getElementById("checkbox-show").checked = true;
+            } else {
+                x.type = "password";
+                document.getElementById("checkbox-show").checked = false;
+            }
+        }
+
+        function OnSubmitUnlock() {
+            if (document.getElementById('usernameU').value === "") {
+                Swal.fire(
+                    'Please input username before submit!',
+                    '',
+                    'error'
+                );
+                document.getElementById('usernameU').focus();
+            }
+             var formData = new FormData();
+            formData.append("user", document.getElementById('usernameU').value);
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("unlock_acc", "home")',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (result) {
+                    if (result.Success) {
+                        Swal.fire(
+                            result.Message,
+                            '',
+                            'info'
+                        );
+                        document.getElementById('txtNewPwd').value = '';
+                        document.getElementById('txtNewPwd').focus();
+                        document.getElementById('txtCnfPwd').value = '';
+                        $('#modal_changes_password').modal('hide');
+                    } else {
+                        Swal.fire(
+                            result.Message,
+                            '',
+                            'error'
+                        );
+                        document.getElementById('txtNewPwd').value = '';
+                        document.getElementById('txtNewPwd').focus();
+                        document.getElementById('txtCnfPwd').value = '';
+                        $('#modal_changes_password').modal('hide');
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
+

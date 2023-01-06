@@ -1,0 +1,86 @@
+﻿
+@model B2B_SCM.Models.Custom
+
+@*<div class="row">
+    <div class="col-sm-12">*@
+@*<label class="checkbox-inline">
+        <input type="checkbox" class="form-check-input rounded-circle">Option 1
+    </label>
+    <label class="checkbox-inline">
+        <input type="checkbox" class="form-check-input rounded-circle">Option 2
+    </label>
+    <label class="checkbox-inline">
+        <input type="checkbox" class="form-check-input rounded-circle">Option 3
+    </label>*@
+@*<div class="form-check mb-2 form-check-success">*@
+
+<div class="row">
+    @if (Model.ModeTransactionDoc == "N")
+    {
+        foreach (var item in Model.Custom_List_Doc_Type)
+        {
+            if (item.Required)
+            {
+                <div class="col-md-4">
+                    <div class="form-check mb-2 form-check-success">
+                        <input class="form-check-input rounded-circle" type="checkbox" name="@("txtChk" + item.Id)" id="@("txtChk" + item.Id)" checked>
+                        <label class="form-check-label" for="@("txtChk" + item.Id)">@item.Name</label>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-4">
+                    <div class="form-check mb-2 form-check-success">
+                        <input class="form-check-input rounded-circle" type="checkbox" name="@("txtChk" + item.Id)" id="@("txtChk" + item.Id)">
+                        <label class="form-check-label" for="@("txtChk" + item.Id)">@item.Name</label>
+                    </div>
+                </div>
+            }
+        }
+    }
+    @if (Model.ModeTransactionDoc == "E")
+    {
+        foreach (var item in Model.Custom_List_Doc_Type)
+        {
+            if (item.Required)
+            {
+                <div class="col-md-4">
+                    <div class="form-check mb-2 form-check-success">
+                        <input class="form-check-input rounded-circle" type="checkbox" name="@("txtChkE" + item.Id)" id="@("txtChkE" + item.Id)" checked>
+                        <label class="form-check-label" for="@("txtChkE" + item.Id)">@item.Name</label>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-4">
+                    <div class="form-check mb-2 form-check-success">
+                        <input class="form-check-input rounded-circle" type="checkbox" name="@("txtChkE" + item.Id)" id="@("txtChkE" + item.Id)">
+                        <label class="form-check-label" for="@("txtChkE" + item.Id)">@item.Name</label>
+                    </div>
+                </div>
+            }
+        }
+    }
+
+</div>
+
+<script>
+
+        @*$("#ShipperE").change(function () {
+            $('#_partial_doc_requiredE').load('@Url.Action("_partial_doc_required", "home")?mode=E&seller=' + document.getElementById('SellerE').value + '&shipper=' + document.getElementById('ShipperE').value + '&pid=' + document.getElementById('PurchaseIDE').value);
+        });
+
+        $("#SellerE").change(function () {
+            $('#_partial_doc_requiredE').load('@Url.Action("_partial_doc_required", "home")?mode=E&seller=' + document.getElementById('SellerE').value + '&shipper=' + document.getElementById('ShipperE').value + '&pid=' + document.getElementById('PurchaseIDE').value);
+        });*@
+    @*$(document).ready(function () {
+        var mode = '@Model.ModeTransactionDoc';
+        if (mode == 'E') {
+            for (element of result.DocRequired.split(",")) {
+                $("#txtChkE" + element).prop("checked", true);
+            }
+        }
+    });*@
+</script>

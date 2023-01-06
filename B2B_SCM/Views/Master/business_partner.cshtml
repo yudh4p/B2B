@@ -1,0 +1,480 @@
+﻿
+@{
+    ViewBag.Title = "Business Partner";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model B2B_SCM.Models.Custom
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="mt-0 header-title">Master Business Partner (BP)</h4>
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-outline-primary waves-effect waves-light" onclick="OnClickAdd()">New BP</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered dt-responsive nowrap" id="table_data" style="width: 100%">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Code</th>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Address</th>
+                                    <th>Country ID</th>
+                                    <th>Country</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Status</th>
+                                    <th>Last Updated By</th>
+                                    <th>Last Updated Date</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+</div>
+
+
+@using (Html.BeginForm("submit_new_bp", "master", FormMethod.Post))
+{
+    <div id="modal_bp" class="modal fade">
+        <div class="modal-dialog modal-full-width">
+            <div class="modal-content">
+                <!-- Modal Body -->
+                <div class="modal-header">
+                    <h4 class="modal-title" id="txtHeaderPopup">New Business Partner</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    @Html.HiddenFor(model => model.ModeTransaction)
+                                    @*<label class="form-label font-bold header-title">Account Type</label>*@
+                                    <label class="mb-3 d-block font-14 bold">Account Type <label style="color: red">*</label></label>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" id="radioSeller" name="AccountType" value="SELLER"> SELLER
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" id="radioShipper" name="AccountType" value="SHIPPER"> SHIPPER
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" id="radioBoth" name="AccountType" value="BOTH"> BOTH
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="VendorCode">Code</label>
+                                    @Html.TextBoxFor(model => model.VendorCode, new { @class = "form-control", @id = "VendorCode", @readonly = "readonly", @style = "background-color: #dee2e6" })
+                                </div>
+                            </div>
+
+                            <div class="row" style="padding-top: 10px;">
+                                <div class="col-md-6">
+                                    <label class="form-label" for="VendorName">Name</label> <label style="color: red">*</label>
+                                    @Html.TextBoxFor(model => model.VendorName, new { @class = "form-control", @id = "VendorName", @required = "required" })
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="CountryId">Country</label> <label style="color: red">*</label>
+                                    @Html.DropDownListFor(model => model.CountryId, Model.CountryList, new { @class = "form-control", @id = "CountryId" })
+                                </div>
+                            </div>
+
+                            <div class="row" style="padding-top: 10px;">
+                                <div class="col-md-12">
+                                    <label class="form-label" for="Address">Address</label> <label style="color: red">*</label>
+                                    @Html.TextAreaFor(model => model.Address, new { @class = "form-control", @id = "Address", @required = "required" })
+                                </div>
+                            </div>
+
+                            <div class="row" style="padding-top: 10px;">
+                                <div class="col-md-6">
+                                    <label class="form-label" for="Email">Email</label> <label style="color: red">*</label>
+                                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @id = "Email", @required = "required" })
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="Phone">Phone</label>
+                                    @Html.TextBoxFor(model => model.Phone, new { @class = "form-control", @id = "Phone" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6" id="divConfig">
+                            <h4 class="mt-0 header-title">Document Config</h4>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered dt-responsive nowrap" id="table_data_doc" style="width: 100%">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Doc. Type</th>
+                                            <th>Enable</th>
+                                            <th>Required</th>
+                                            <th>Last Updated By</th>
+                                            <th>Last Updated Date</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <div style="text-align: right">
+                        <a href="#" class="btn btn-outline-danger waves-effect waves-light" data-bs-dismiss="modal">Cancel</a>
+                        <button type="submit" class="btn btn-outline-primary waves-effect waves-light" id="btnSubmit">Submit</button>
+                    </div>
+                </div>
+                <!-- End Modal Body -->
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts
+    {
+    <script>
+        $("#CountryId").selectize();
+
+        function OnClickAdd() {
+            document.getElementById('ModeTransaction').value = 'NEW';
+            document.getElementById('txtHeaderPopup').innerHTML = 'Business Partner - NEW';
+            document.getElementById('btnSubmit').innerHTML = 'Submit';
+
+
+            document.getElementById('VendorCode').value = 'AUTOMATIC';
+            document.getElementById('VendorName').value = '';
+            document.getElementById('Address').value = '';
+            document.getElementById('Email').value = '';
+            document.getElementById('Phone').value = '';
+
+            $("#radioSeller").prop("checked", false);
+            $("#radioShipper").prop("checked", false);
+            $("#radioBoth").prop("checked", false);
+
+            var $select = $("#CountryId").selectize();
+            var selectize = $select[0].selectize;
+            selectize.setValue('');
+
+            load_table_doc(document.getElementById('VendorCode').value);
+
+            $('#divConfig').prop('disabled', true);
+            $('#modal_bp').modal('show');
+        }
+
+        function OnClickEdit(id) {
+            var data = { id: id };
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("get_detail_bp", "master")',
+                data: data,
+                success: function(result) {
+                    if (result.success) {
+                        document.getElementById('txtHeaderPopup').innerHTML = 'Business Partner - EDIT';
+                        document.getElementById('ModeTransaction').value = 'EDIT';
+                        document.getElementById('VendorCode').value = result.VendorCode;
+                        document.getElementById('VendorName').value = result.VendorName;
+                        document.getElementById('Address').value = result.Address;
+                        document.getElementById('Email').value = result.Email;
+                        document.getElementById('Phone').value = result.Phone;
+
+                        if (result.VendorType == "SELLER") {
+                            $("#radioSeller").prop("checked", true);
+                        }
+                        else {
+                            $("#radioShipper").prop("checked", true);
+                        }
+
+                        var $select = $("#CountryId").selectize();
+                        var selectize = $select[0].selectize;
+                        selectize.setValue(result.CountryId);
+
+                        load_table_doc(document.getElementById('VendorCode').value);
+                        document.getElementById('btnSubmit').innerHTML = 'Update';
+                        //$('#CountryId').val(result.CountryId);
+                        //$('#CountryId').select2().trigger('change');
+
+                        $('#divConfig').prop('disabled', false);
+                        $('#modal_bp').modal('show');
+                    } else {
+
+                    }
+                }
+            });
+        }
+
+        function OnClickDelete(id) {
+
+            var isValid = confirm('Are you sure want to deactive this record?');
+            if (isValid == false) {
+                return isValid;
+            }
+
+            var data = { id: id, status: "0" };
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("active_deactive_bp", "master")',
+                data: data,
+                success: function(result) {
+                    Swal.fire(
+                        result.message,
+                        '',
+                        'info'
+                    );
+                    load_table();
+                }
+            });
+        }
+
+        function OnClickRestore(id) {
+            var isValid = confirm('Are you sure want to active this record?');
+            if (isValid == false) {
+                return isValid;
+            }
+
+            var data = { id: id, status: "1" };
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("active_deactive_bp", "master")',
+                data: data,
+                success: function(result) {
+                    Swal.fire(
+                        result.message,
+                        '',
+                        'info'
+                    );
+                    load_table();
+                }
+            });
+        }
+        $(document).ready(function () {
+            load_table();
+        });
+
+          function load_table() {
+            var table = $('#table_data').DataTable();
+            table.destroy();
+            $('#table_data').DataTable({
+                "ajax": {
+                    "url": '@Url.Action("load_business_partner", "master")',
+                    "type": "GET",
+                    "datatype": "json",
+                    dataSrc: function(data) {
+                        return $.parseJSON(data.data);
+                    }
+                },
+                "columns": [
+                    {
+                        "data": null, "autoWidth": true,
+                        mRender: function (data, type, row) {
+                            if (row.Status == 'Active') {
+                                return '<span class="contact-edit" onclick="OnClickEdit(\'' + row.VendorCode + '\');"><img src="/assets/img/svg/c-edit.svg" alt="" class="svg"></span>&ensp;<span class="contact-close" onclick="return OnClickDelete(\'' + row.VendorCode + '\');"><img src="/assets/img/svg/c-close.svg" alt="" class="svg"></span>';
+                            }
+                            else {
+                                return '<span class="text-center" onclick="return OnClickRestore(\'' + row.VendorCode + '\');"><img src="/assets/img/svg/upload-down.svg" alt="" class="svg"></span>';
+                            }
+                        }
+                    },
+                    {
+                        "data": "VendorCode", "autoWidth": true,
+                    },
+                    {
+                        "data": "VendorName", "autoWidth": true,
+                    },
+                    {
+                        "data": "VendorType", "autoWidth": true,
+                    },
+                    {
+                        "data": "Address", "autoWidth": true,
+                    },
+                    {
+                        "data": "CountryId", "autoWidth": true, "visible": false,
+                    },
+                    {
+                        "data": "CountryName", "autoWidth": true,
+                    },
+                    {
+                        "data": "Email", "autoWidth": true,
+                    },
+                    {
+                        "data": "Phone", "autoWidth": true,
+                    },
+                    {
+                        "data": "Status", "autoWidth": true,
+                        mRender: function (data, type, row) {
+                            if (row.Status == 'Active') {
+                                return '<span style="color: blue"> Active </span>';
+                            }
+                            else {
+                                return '<span style="color: red"> Deactive </span>';
+                            }
+                        }
+                    },
+                    {
+                        "data": "UpdBy", "autoWidth": true,
+                    },
+                    {
+                        "data": "UpdDate", "autoWidth": true,
+                    },
+                ],
+                "bLengthChange": false,
+                "bFilter": true,
+                "order": [[0, "asc"]],
+            });
+            return true;
+        }
+
+         function load_table_doc(vendorCode) {
+            var table = $('#table_data_doc').DataTable();
+            table.destroy();
+            $('#table_data_doc').DataTable({
+                "ajax": {
+                    "url": '@Url.Action("load_bp_doc", "master")?vendorCode=' + vendorCode,
+                    "type": "GET",
+                    "datatype": "json",
+                    dataSrc: function(data) {
+                        return $.parseJSON(data.data);
+                    }
+                },
+                "columns": [
+                    {
+                        "data": "UID", "autoWidth": true, "visible": false,
+                        mRender: function (data, type, row) {
+                            return '<span onclick="OnClickEdit(\'' + row.UID + '\');">Enabled</span>&ensp;<span onclick="OnClickEdit(\'' + row.UID + '\');">Required</span>';
+                            //if (row.Status == 'Active') {
+                            //    return '<span onclick="OnClickEdit(\'' + row.UID + '\');">Enabled</span>&ensp;<span onclick="OnClickEdit(\'' + row.UID + '\');">Required</span>';
+                            //}
+                            //else {
+                            //    return '<span onclick="OnClickEdit(\'' + row.UID + '\');">Enabled</span>&ensp;<span onclick="OnClickEdit(\'' + row.UID + '\');">Required</span>';
+                            //}
+                        }
+                    },
+                    {
+                        "data": "DOC_NAME", "autoWidth": true,
+                    },
+                    {
+                        "data": "CAN_UPLOAD", "autoWidth": true,
+                        mRender: function (data, type, row) {
+                            if (row.CAN_UPLOAD == true) {
+                                return '<input type="checkbox" class="form-check-input rounded-circle" onchange="return OnEnabledChecked(this,\'' + row.UID + '\')" checked/>';
+                            }
+                            else {
+                                return '<input type="checkbox" class="form-check-input rounded-circle" onchange="return OnEnabledChecked(this,\'' + row.UID + '\')"/>';
+                            }
+                        }
+                    },
+                    {
+                        "data": "REQUIRED", "autoWidth": true,
+                        mRender: function (data, type, row) {
+                            if (row.REQUIRED == true) {
+                                return '<input type="checkbox" class="form-check-input rounded-circle" onchange="return OnRequiredChecked(this,\'' + row.UID + '\')" checked/>';
+                            }
+                            else {
+                                return '<input type="checkbox" class="form-check-input rounded-circle" onchange="return OnRequiredChecked(this,\'' + row.UID + '\')"/>';
+                            }
+                        }
+                    },
+                    {
+                        "data": "UPDBY", "autoWidth": true,
+                    },
+                    {
+                        "data": "UPDDATE", "autoWidth": true,
+                    },
+                ],
+                "bLengthChange": false,
+                "bFilter": true,
+                "order": [[0, "asc"]],
+            });
+            return true;
+        }
+
+        function OnEnabledChecked(element, id) {
+            if (element.checked) {
+                //Swal.fire({
+                //    title: 'Are you sure want to enabled this type?',
+                //    text: "You won't be able to revert this!",
+                //    icon: "warning",
+                //    showCancelButton: !0,
+                //    confirmButtonColor: "#28bb4b",
+                //    cancelButtonColor: "#f34e4e",
+                //    confirmButtonText: "Continue"
+                //}).then(function (e) {
+                //    e.value && uploadFile(DocType)
+                //})
+
+                var isValid = confirm('Are you sure want to enabled this type?');
+                if (isValid == false) {
+                    element.checked = !element.checked;
+                    return isValid;
+                }
+            }
+            else {
+                var isValid = confirm('Are you sure want to disabled this type?');
+                if (isValid == false) {
+                    element.checked = !element.checked;
+                    return isValid;
+                }
+            }
+
+            var data = { id: id, status: element.checked, type: 'E' };
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("enabled_disabled_bp_doc", "master")',
+                data: data,
+                success: function(result) {
+                    Swal.fire(
+                        result.message,
+                        '',
+                        'info'
+                    );
+                }
+            });
+        }
+
+        function OnRequiredChecked(element, id) {
+            if (element.checked) {
+                var isValid = confirm('Are you sure want to required this type?');
+                if (isValid == false) {
+                    element.checked = !element.checked;
+                    return isValid;
+                }
+            }
+            else {
+                var isValid = confirm('Are you sure want to not required this type?');
+                if (isValid == false) {
+                    element.checked = !element.checked;
+                    return isValid;
+                }
+            }
+
+            var data = { id: id, status: element.checked, type: 'R' };
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("enabled_disabled_bp_doc", "master")',
+                data: data,
+                success: function(result) {
+                    Swal.fire(
+                        result.message,
+                        '',
+                        'info'
+                    );
+                }
+            });
+        }
+    </script>
+
+}

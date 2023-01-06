@@ -1,0 +1,823 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="B2BSCMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="MS_BP">
+          <Key>
+            <PropertyRef Name="VendorCode" />
+          </Key>
+          <Property Name="VendorCode" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="VendorName" Type="nvarchar" MaxLength="150" />
+          <Property Name="VendorType" Type="nvarchar" MaxLength="50" />
+          <Property Name="Address" Type="nvarchar" MaxLength="200" />
+          <Property Name="CountryId" Type="int" />
+          <Property Name="Email" Type="nvarchar" MaxLength="200" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="20" />
+          <Property Name="Status" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="UpdDate" Type="datetime" />
+          <Property Name="UpdBy" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="MS_BP_CP">
+          <Key>
+            <PropertyRef Name="Uid" />
+          </Key>
+          <Property Name="Uid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VendorCode" Type="nvarchar" MaxLength="15" />
+          <Property Name="PICName" Type="nvarchar" MaxLength="255" />
+          <Property Name="PICTitle" Type="nvarchar" MaxLength="50" />
+          <Property Name="PICEmail" Type="nvarchar" MaxLength="255" />
+          <Property Name="PICPhone" Type="nvarchar" MaxLength="20" />
+          <Property Name="Status" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="UpdDate" Type="datetime" />
+          <Property Name="UpdBy" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="MS_COUNTRY">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="Status" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="UpdDate" Type="datetime" />
+          <Property Name="UpdBy" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="MS_DOCTYPE">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Required" Type="bit" />
+          <Property Name="Secure" Type="bit" />
+          <Property Name="Bfm_Scm" Type="bit" />
+          <Property Name="Bfm_Finance" Type="bit" />
+          <Property Name="Seller" Type="bit" />
+          <Property Name="Shipper" Type="bit" />
+        </EntityType>
+        <EntityType Name="MS_PORT">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="CountryId" Type="int" />
+          <Property Name="Status" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="UpdDate" Type="datetime" />
+          <Property Name="UpdBy" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="MS_URL">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Path_Url" Type="nvarchar" MaxLength="250" />
+          <Property Name="Descr" Type="nvarchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="MS_USER">
+          <Key>
+            <PropertyRef Name="Usr" />
+            <PropertyRef Name="AccountType" />
+          </Key>
+          <Property Name="Usr" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Pwd" Type="nvarchar" MaxLength="500" />
+          <Property Name="Fn" Type="nvarchar" MaxLength="500" />
+          <Property Name="AccountType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="500" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="500" />
+          <Property Name="VendorCode" Type="nvarchar" MaxLength="15" />
+          <Property Name="Locked" Type="bit" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="CreatedUser" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdDate" Type="datetime" />
+          <Property Name="UpdBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="Admin" Type="bit" />
+          <Property Name="Failed" Type="int" />
+        </EntityType>
+        <EntityType Name="TRX">
+          <Key>
+            <PropertyRef Name="PurchaseNo1" />
+            <PropertyRef Name="PurchaseNo2" />
+          </Key>
+          <Property Name="PurchaseNo1" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="PurchaseNo2" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="TradeQty" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="UnitPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="FinalUnitPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ShipmentFrom" Type="date" />
+          <Property Name="ShipmentTo" Type="date" />
+          <Property Name="Origin" Type="nvarchar" MaxLength="100" />
+          <Property Name="Shipper" Type="nvarchar" MaxLength="15" />
+          <Property Name="Seller" Type="nvarchar" MaxLength="15" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="255" />
+          <Property Name="RequiredDoc" Type="nvarchar" MaxLength="100" />
+          <Property Name="Status" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="UpdDate" Type="datetime" />
+          <Property Name="UpdBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="LTCCommDiscDate" Type="date" />
+          <Property Name="LTCCompDiscDate" Type="date" />
+          <Property Name="LTCConfirm" Type="bit" />
+          <Property Name="LTCConfirmBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="LTCConfirmDate" Type="datetime" />
+          <Property Name="LTCDueDate" Type="date" />
+          <Property Name="LTCPaymentDueDate" Type="date" />
+          <Property Name="PaymentDueDate" Type="date" />
+          <Property Name="PaymentDate" Type="datetime" />
+          <Property Name="StatusDesDem" Type="nvarchar" MaxLength="3" />
+          <Property Name="Rates" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Currency" Type="nvarchar" MaxLength="3" />
+          <Property Name="Guid" Type="uniqueidentifier" />
+          <Property Name="Closed" Type="bit" />
+          <Property Name="ClosedDate" Type="datetime" />
+          <Property Name="ClosedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="ContractNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="ContractDate" Type="datetime" />
+          <Property Name="FinalAmount" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="TRX_AWB">
+          <Key>
+            <PropertyRef Name="Uid" />
+          </Key>
+          <Property Name="Uid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PurchaseNo2" Type="bigint" />
+          <Property Name="AWB" Type="nvarchar" MaxLength="50" />
+          <Property Name="Courier" Type="nvarchar" MaxLength="50" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="150" />
+          <Property Name="Status" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="UpdDate" Type="datetime" />
+          <Property Name="UpdBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="Ctgry" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TRX_DOC">
+          <Key>
+            <PropertyRef Name="Uid" />
+          </Key>
+          <Property Name="Uid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PurchaseNo2" Type="bigint" Nullable="false" />
+          <Property Name="AttachmentFile" Type="varbinary(max)" />
+          <Property Name="AttachmentName" Type="nvarchar" MaxLength="250" />
+          <Property Name="AttachmentType" Type="nvarchar" MaxLength="100" />
+          <Property Name="AttachmentStatus" Type="int" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="250" />
+          <Property Name="DocType" Type="int" />
+          <Property Name="DocPassword" Type="nvarchar" MaxLength="250" />
+          <Property Name="Process" Type="bit" />
+          <Property Name="Status" Type="bit" />
+          <Property Name="CreatedUser" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdDate" Type="datetime" />
+          <Property Name="UpdBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="Feedback" Type="nvarchar" MaxLength="250" />
+          <Property Name="ContractNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="ContractDate" Type="date" />
+          <Property Name="Guid" Type="nvarchar" MaxLength="100" />
+          <Property Name="RefId" Type="bigint" />
+        </EntityType>
+        <EntityType Name="TRX_DOC_HEADER">
+          <Key>
+            <PropertyRef Name="Uid" />
+          </Key>
+          <Property Name="Uid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PurchaseNo2" Type="bigint" Nullable="false" />
+          <Property Name="AttachmentName" Type="nvarchar" MaxLength="250" />
+          <Property Name="DocType" Type="int" Nullable="false" />
+          <Property Name="AttachmentStatus" Type="int" />
+          <Property Name="Status" Type="bit" />
+          <Property Name="Trx_Doc_Id" Type="bigint" />
+          <Property Name="Guid" Type="nvarchar" MaxLength="100" />
+          <Property Name="Date" Type="datetime" />
+        </EntityType>
+        <EntityType Name="TRX_DTL">
+          <Key>
+            <PropertyRef Name="Uid" />
+          </Key>
+          <Property Name="Uid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PurchaseNo2" Type="bigint" Nullable="false" />
+          <Property Name="WheatCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="WheatName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Qty" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="FinalQty" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="FinalPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="LoadPort" Type="nvarchar" MaxLength="150" />
+          <Property Name="ETALoad" Type="datetime" />
+          <Property Name="ETBLoad" Type="datetime" />
+          <Property Name="ETDLoad" Type="datetime" />
+          <Property Name="DiscPort" Type="nvarchar" MaxLength="150" />
+          <Property Name="ETADisc" Type="datetime" />
+          <Property Name="ETBDisc" Type="datetime" />
+          <Property Name="ETCDisc" Type="datetime" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="UpdDate" Type="datetime" />
+          <Property Name="UpdBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="Status" Type="bit" />
+          <Property Name="Guid" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="TRX_SHP">
+          <Key>
+            <PropertyRef Name="Uid" />
+          </Key>
+          <Property Name="Uid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PurchaseNo2" Type="bigint" Nullable="false" />
+          <Property Name="VesselName" Type="nvarchar" MaxLength="150" />
+          <Property Name="VesselDetail" Type="nvarchar(max)" />
+          <Property Name="DemRate" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DesRate" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="LoadPort" Type="nvarchar" MaxLength="150" />
+          <Property Name="ETA" Type="datetime" />
+          <Property Name="ETB" Type="datetime" />
+          <Property Name="ETD" Type="datetime" />
+          <Property Name="AppointAgent" Type="nvarchar" MaxLength="150" />
+          <Property Name="AWB" Type="nvarchar" MaxLength="150" />
+          <Property Name="Courier" Type="nvarchar" MaxLength="150" />
+          <Property Name="CreatedUser" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdDate" Type="datetime" />
+          <Property Name="UpdBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="Guid" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityContainer Name="B2BSCMModelStoreContainer">
+          <EntitySet Name="MS_BP" EntityType="Self.MS_BP" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MS_BP_CP" EntityType="Self.MS_BP_CP" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MS_COUNTRY" EntityType="Self.MS_COUNTRY" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MS_DOCTYPE" EntityType="Self.MS_DOCTYPE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MS_PORT" EntityType="Self.MS_PORT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MS_URL" EntityType="Self.MS_URL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MS_USER" EntityType="Self.MS_USER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TRX" EntityType="Self.TRX" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TRX_AWB" EntityType="Self.TRX_AWB" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TRX_DOC" EntityType="Self.TRX_DOC" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TRX_DOC_HEADER" EntityType="Self.TRX_DOC_HEADER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TRX_DTL" EntityType="Self.TRX_DTL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TRX_SHP" EntityType="Self.TRX_SHP" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="B2BSCMModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="MS_BP">
+          <Key>
+            <PropertyRef Name="VendorCode" />
+          </Key>
+          <Property Name="VendorCode" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="VendorName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="VendorType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CountryId" Type="Int32" />
+          <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UpdDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MS_BP_CP">
+          <Key>
+            <PropertyRef Name="Uid" />
+          </Key>
+          <Property Name="Uid" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VendorCode" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="PICName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PICTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PICEmail" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PICPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UpdDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MS_COUNTRY">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UpdDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MS_DOCTYPE">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Required" Type="Boolean" />
+          <Property Name="Secure" Type="Boolean" />
+          <Property Name="Bfm_Scm" Type="Boolean" />
+          <Property Name="Bfm_Finance" Type="Boolean" />
+          <Property Name="Seller" Type="Boolean" />
+          <Property Name="Shipper" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="MS_PORT">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CountryId" Type="Int32" />
+          <Property Name="Status" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UpdDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MS_URL">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Path_Url" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Descr" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MS_USER">
+          <Key>
+            <PropertyRef Name="Usr" />
+            <PropertyRef Name="AccountType" />
+          </Key>
+          <Property Name="Usr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Pwd" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Fn" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AccountType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="VendorCode" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Locked" Type="Boolean" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="CreatedUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Admin" Type="Boolean" />
+          <Property Name="Failed" Type="Int32" />
+        </EntityType>
+        <EntityType Name="TRX">
+          <Key>
+            <PropertyRef Name="PurchaseNo2" />
+            <PropertyRef Name="PurchaseNo1" />
+          </Key>
+          <Property Name="PurchaseNo1" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PurchaseNo2" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="TradeQty" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="UnitPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ShipmentFrom" Type="DateTime" Precision="0" />
+          <Property Name="ShipmentTo" Type="DateTime" Precision="0" />
+          <Property Name="Origin" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Shipper" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Seller" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RequiredDoc" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UpdDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PaymentDueDate" Type="DateTime" Precision="0" />
+          <Property Name="FinalUnitPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="LTCCommDiscDate" Type="DateTime" Precision="0" />
+          <Property Name="LTCCompDiscDate" Type="DateTime" Precision="0" />
+          <Property Name="LTCConfirm" Type="Boolean" />
+          <Property Name="LTCConfirmBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LTCConfirmDate" Type="DateTime" Precision="3" />
+          <Property Name="StatusDesDem" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="Rates" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="Guid" Type="Guid" />
+          <Property Name="PaymentDate" Type="DateTime" Precision="3" />
+          <Property Name="Closed" Type="Boolean" />
+          <Property Name="ClosedDate" Type="DateTime" Precision="3" />
+          <Property Name="ClosedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ContractNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ContractDate" Type="DateTime" Precision="3" />
+          <Property Name="FinalAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="LTCDueDate" Type="DateTime" Precision="0" />
+          <Property Name="LTCPaymentDueDate" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="TRX_DOC">
+          <Key>
+            <PropertyRef Name="Uid" />
+          </Key>
+          <Property Name="Uid" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PurchaseNo2" Type="Int64" Nullable="false" />
+          <Property Name="AttachmentFile" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="AttachmentName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="AttachmentType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AttachmentStatus" Type="Int32" />
+          <Property Name="Remark" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="DocType" Type="Int32" />
+          <Property Name="DocPassword" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="Boolean" />
+          <Property Name="Process" Type="Boolean" />
+          <Property Name="UpdDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Feedback" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ContractNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ContractDate" Type="DateTime" Precision="0" />
+          <Property Name="Guid" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RefId" Type="Int64" />
+        </EntityType>
+        <EntityType Name="TRX_DTL">
+          <Key>
+            <PropertyRef Name="Uid" />
+          </Key>
+          <Property Name="Uid" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PurchaseNo2" Type="Int64" Nullable="false" />
+          <Property Name="WheatCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="WheatName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DiscPort" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Qty" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UpdDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Boolean" />
+          <Property Name="FinalQty" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="LoadPort" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ETALoad" Type="DateTime" Precision="3" />
+          <Property Name="ETBLoad" Type="DateTime" Precision="3" />
+          <Property Name="ETDLoad" Type="DateTime" Precision="3" />
+          <Property Name="ETADisc" Type="DateTime" Precision="3" />
+          <Property Name="ETBDisc" Type="DateTime" Precision="3" />
+          <Property Name="ETCDisc" Type="DateTime" Precision="3" />
+          <Property Name="Guid" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FinalPrice" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="TRX_SHP">
+          <Key>
+            <PropertyRef Name="Uid" />
+          </Key>
+          <Property Name="Uid" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PurchaseNo2" Type="Int64" Nullable="false" />
+          <Property Name="VesselName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="VesselDetail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DemRate" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DesRate" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="LoadPort" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ETA" Type="DateTime" Precision="3" />
+          <Property Name="ETD" Type="DateTime" Precision="3" />
+          <Property Name="AppointAgent" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="AWB" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Courier" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ETB" Type="DateTime" Precision="3" />
+          <Property Name="Guid" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityContainer Name="B2BSCMDb" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="MS_BP" EntityType="Self.MS_BP" />
+          <EntitySet Name="MS_BP_CP" EntityType="Self.MS_BP_CP" />
+          <EntitySet Name="MS_COUNTRY" EntityType="Self.MS_COUNTRY" />
+          <EntitySet Name="MS_DOCTYPE" EntityType="Self.MS_DOCTYPE" />
+          <EntitySet Name="MS_PORT" EntityType="Self.MS_PORT" />
+          <EntitySet Name="MS_URL" EntityType="Self.MS_URL" />
+          <EntitySet Name="MS_USER" EntityType="Self.MS_USER" />
+          <EntitySet Name="TRX" EntityType="Self.TRX" />
+          <EntitySet Name="TRX_DOC" EntityType="Self.TRX_DOC" />
+          <EntitySet Name="TRX_DTL" EntityType="Self.TRX_DTL" />
+          <EntitySet Name="TRX_SHP" EntityType="Self.TRX_SHP" />
+          <EntitySet Name="TRX_AWB" EntityType="B2BSCMModel.TRX_AWB" />
+          <EntitySet Name="TRX_DOC_HEADER" EntityType="B2BSCMModel.TRX_DOC_HEADER" />
+        </EntityContainer>
+        <EntityType Name="TRX_AWB">
+          <Key>
+            <PropertyRef Name="Uid" />
+          </Key>
+          <Property Name="Uid" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PurchaseNo2" Type="Int64" />
+          <Property Name="AWB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Courier" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UpdDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Ctgry" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TRX_DOC_HEADER">
+          <Key>
+            <PropertyRef Name="Uid" />
+          </Key>
+          <Property Name="Uid" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PurchaseNo2" Type="Int64" Nullable="false" />
+          <Property Name="AttachmentName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="DocType" Type="Int32" Nullable="false" />
+          <Property Name="AttachmentStatus" Type="Int32" />
+          <Property Name="Status" Type="Boolean" />
+          <Property Name="Trx_Doc_Id" Type="Int64" />
+          <Property Name="Guid" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="B2BSCMModelStoreContainer" CdmEntityContainer="B2BSCMDb">
+          <EntitySetMapping Name="MS_BP">
+            <EntityTypeMapping TypeName="B2BSCMModel.MS_BP">
+              <MappingFragment StoreEntitySet="MS_BP">
+                <ScalarProperty Name="VendorCode" ColumnName="VendorCode" />
+                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+                <ScalarProperty Name="VendorType" ColumnName="VendorType" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdDate" ColumnName="UpdDate" />
+                <ScalarProperty Name="UpdBy" ColumnName="UpdBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MS_BP_CP">
+            <EntityTypeMapping TypeName="B2BSCMModel.MS_BP_CP">
+              <MappingFragment StoreEntitySet="MS_BP_CP">
+                <ScalarProperty Name="Uid" ColumnName="Uid" />
+                <ScalarProperty Name="VendorCode" ColumnName="VendorCode" />
+                <ScalarProperty Name="PICName" ColumnName="PICName" />
+                <ScalarProperty Name="PICTitle" ColumnName="PICTitle" />
+                <ScalarProperty Name="PICEmail" ColumnName="PICEmail" />
+                <ScalarProperty Name="PICPhone" ColumnName="PICPhone" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdDate" ColumnName="UpdDate" />
+                <ScalarProperty Name="UpdBy" ColumnName="UpdBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MS_COUNTRY">
+            <EntityTypeMapping TypeName="B2BSCMModel.MS_COUNTRY">
+              <MappingFragment StoreEntitySet="MS_COUNTRY">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdDate" ColumnName="UpdDate" />
+                <ScalarProperty Name="UpdBy" ColumnName="UpdBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MS_DOCTYPE">
+            <EntityTypeMapping TypeName="B2BSCMModel.MS_DOCTYPE">
+              <MappingFragment StoreEntitySet="MS_DOCTYPE">
+                <ScalarProperty Name="Shipper" ColumnName="Shipper" />
+                <ScalarProperty Name="Seller" ColumnName="Seller" />
+                <ScalarProperty Name="Bfm_Finance" ColumnName="Bfm_Finance" />
+                <ScalarProperty Name="Bfm_Scm" ColumnName="Bfm_Scm" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Required" ColumnName="Required" />
+                <ScalarProperty Name="Secure" ColumnName="Secure" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MS_PORT">
+            <EntityTypeMapping TypeName="B2BSCMModel.MS_PORT">
+              <MappingFragment StoreEntitySet="MS_PORT">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdDate" ColumnName="UpdDate" />
+                <ScalarProperty Name="UpdBy" ColumnName="UpdBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MS_URL">
+            <EntityTypeMapping TypeName="B2BSCMModel.MS_URL">
+              <MappingFragment StoreEntitySet="MS_URL">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Path_Url" ColumnName="Path_Url" />
+                <ScalarProperty Name="Descr" ColumnName="Descr" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MS_USER">
+            <EntityTypeMapping TypeName="B2BSCMModel.MS_USER">
+              <MappingFragment StoreEntitySet="MS_USER">
+                <ScalarProperty Name="Failed" ColumnName="Failed" />
+                <ScalarProperty Name="Usr" ColumnName="Usr" />
+                <ScalarProperty Name="Pwd" ColumnName="Pwd" />
+                <ScalarProperty Name="Fn" ColumnName="Fn" />
+                <ScalarProperty Name="AccountType" ColumnName="AccountType" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="VendorCode" ColumnName="VendorCode" />
+                <ScalarProperty Name="Locked" ColumnName="Locked" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="CreatedUser" ColumnName="CreatedUser" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdDate" ColumnName="UpdDate" />
+                <ScalarProperty Name="UpdBy" ColumnName="UpdBy" />
+                <ScalarProperty Name="Admin" ColumnName="Admin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TRX">
+            <EntityTypeMapping TypeName="B2BSCMModel.TRX">
+              <MappingFragment StoreEntitySet="TRX">
+                <ScalarProperty Name="LTCPaymentDueDate" ColumnName="LTCPaymentDueDate" />
+                <ScalarProperty Name="LTCDueDate" ColumnName="LTCDueDate" />
+                <ScalarProperty Name="FinalAmount" ColumnName="FinalAmount" />
+                <ScalarProperty Name="ContractDate" ColumnName="ContractDate" />
+                <ScalarProperty Name="ContractNo" ColumnName="ContractNo" />
+                <ScalarProperty Name="ClosedBy" ColumnName="ClosedBy" />
+                <ScalarProperty Name="ClosedDate" ColumnName="ClosedDate" />
+                <ScalarProperty Name="Closed" ColumnName="Closed" />
+                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+                <ScalarProperty Name="Guid" ColumnName="Guid" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="Rates" ColumnName="Rates" />
+                <ScalarProperty Name="StatusDesDem" ColumnName="StatusDesDem" />
+                <ScalarProperty Name="LTCConfirmDate" ColumnName="LTCConfirmDate" />
+                <ScalarProperty Name="LTCConfirmBy" ColumnName="LTCConfirmBy" />
+                <ScalarProperty Name="LTCConfirm" ColumnName="LTCConfirm" />
+                <ScalarProperty Name="LTCCompDiscDate" ColumnName="LTCCompDiscDate" />
+                <ScalarProperty Name="LTCCommDiscDate" ColumnName="LTCCommDiscDate" />
+                <ScalarProperty Name="FinalUnitPrice" ColumnName="FinalUnitPrice" />
+                <ScalarProperty Name="PaymentDueDate" ColumnName="PaymentDueDate" />
+                <ScalarProperty Name="PurchaseNo1" ColumnName="PurchaseNo1" />
+                <ScalarProperty Name="PurchaseNo2" ColumnName="PurchaseNo2" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="TradeQty" ColumnName="TradeQty" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="ShipmentFrom" ColumnName="ShipmentFrom" />
+                <ScalarProperty Name="ShipmentTo" ColumnName="ShipmentTo" />
+                <ScalarProperty Name="Origin" ColumnName="Origin" />
+                <ScalarProperty Name="Shipper" ColumnName="Shipper" />
+                <ScalarProperty Name="Seller" ColumnName="Seller" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="RequiredDoc" ColumnName="RequiredDoc" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdDate" ColumnName="UpdDate" />
+                <ScalarProperty Name="UpdBy" ColumnName="UpdBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TRX_DOC">
+            <EntityTypeMapping TypeName="B2BSCMModel.TRX_DOC">
+              <MappingFragment StoreEntitySet="TRX_DOC">
+                <ScalarProperty Name="RefId" ColumnName="RefId" />
+                <ScalarProperty Name="Guid" ColumnName="Guid" />
+                <ScalarProperty Name="ContractDate" ColumnName="ContractDate" />
+                <ScalarProperty Name="ContractNo" ColumnName="ContractNo" />
+                <ScalarProperty Name="Feedback" ColumnName="Feedback" />
+                <ScalarProperty Name="UpdBy" ColumnName="UpdBy" />
+                <ScalarProperty Name="UpdDate" ColumnName="UpdDate" />
+                <ScalarProperty Name="Process" ColumnName="Process" />
+                <ScalarProperty Name="Uid" ColumnName="Uid" />
+                <ScalarProperty Name="PurchaseNo2" ColumnName="PurchaseNo2" />
+                <ScalarProperty Name="AttachmentFile" ColumnName="AttachmentFile" />
+                <ScalarProperty Name="AttachmentName" ColumnName="AttachmentName" />
+                <ScalarProperty Name="AttachmentType" ColumnName="AttachmentType" />
+                <ScalarProperty Name="AttachmentStatus" ColumnName="AttachmentStatus" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="DocType" ColumnName="DocType" />
+                <ScalarProperty Name="DocPassword" ColumnName="DocPassword" />
+                <ScalarProperty Name="CreatedUser" ColumnName="CreatedUser" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TRX_DTL">
+            <EntityTypeMapping TypeName="B2BSCMModel.TRX_DTL">
+              <MappingFragment StoreEntitySet="TRX_DTL">
+                <ScalarProperty Name="FinalPrice" ColumnName="FinalPrice" />
+                <ScalarProperty Name="Guid" ColumnName="Guid" />
+                <ScalarProperty Name="ETCDisc" ColumnName="ETCDisc" />
+                <ScalarProperty Name="ETBDisc" ColumnName="ETBDisc" />
+                <ScalarProperty Name="ETADisc" ColumnName="ETADisc" />
+                <ScalarProperty Name="ETDLoad" ColumnName="ETDLoad" />
+                <ScalarProperty Name="ETBLoad" ColumnName="ETBLoad" />
+                <ScalarProperty Name="ETALoad" ColumnName="ETALoad" />
+                <ScalarProperty Name="LoadPort" ColumnName="LoadPort" />
+                <ScalarProperty Name="FinalQty" ColumnName="FinalQty" />
+                <ScalarProperty Name="Uid" ColumnName="Uid" />
+                <ScalarProperty Name="PurchaseNo2" ColumnName="PurchaseNo2" />
+                <ScalarProperty Name="WheatCode" ColumnName="WheatCode" />
+                <ScalarProperty Name="WheatName" ColumnName="WheatName" />
+                <ScalarProperty Name="DiscPort" ColumnName="DiscPort" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdDate" ColumnName="UpdDate" />
+                <ScalarProperty Name="UpdBy" ColumnName="UpdBy" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TRX_SHP">
+            <EntityTypeMapping TypeName="B2BSCMModel.TRX_SHP">
+              <MappingFragment StoreEntitySet="TRX_SHP">
+                <ScalarProperty Name="Guid" ColumnName="Guid" />
+                <ScalarProperty Name="ETB" ColumnName="ETB" />
+                <ScalarProperty Name="Uid" ColumnName="Uid" />
+                <ScalarProperty Name="PurchaseNo2" ColumnName="PurchaseNo2" />
+                <ScalarProperty Name="VesselName" ColumnName="VesselName" />
+                <ScalarProperty Name="VesselDetail" ColumnName="VesselDetail" />
+                <ScalarProperty Name="DemRate" ColumnName="DemRate" />
+                <ScalarProperty Name="DesRate" ColumnName="DesRate" />
+                <ScalarProperty Name="LoadPort" ColumnName="LoadPort" />
+                <ScalarProperty Name="ETA" ColumnName="ETA" />
+                <ScalarProperty Name="ETD" ColumnName="ETD" />
+                <ScalarProperty Name="AppointAgent" ColumnName="AppointAgent" />
+                <ScalarProperty Name="AWB" ColumnName="AWB" />
+                <ScalarProperty Name="Courier" ColumnName="Courier" />
+                <ScalarProperty Name="CreatedUser" ColumnName="CreatedUser" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdDate" ColumnName="UpdDate" />
+                <ScalarProperty Name="UpdBy" ColumnName="UpdBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TRX_AWB">
+            <EntityTypeMapping TypeName="B2BSCMModel.TRX_AWB">
+              <MappingFragment StoreEntitySet="TRX_AWB">
+                <ScalarProperty Name="Ctgry" ColumnName="Ctgry" />
+                <ScalarProperty Name="UpdBy" ColumnName="UpdBy" />
+                <ScalarProperty Name="UpdDate" ColumnName="UpdDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Courier" ColumnName="Courier" />
+                <ScalarProperty Name="AWB" ColumnName="AWB" />
+                <ScalarProperty Name="PurchaseNo2" ColumnName="PurchaseNo2" />
+                <ScalarProperty Name="Uid" ColumnName="Uid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TRX_DOC_HEADER">
+            <EntityTypeMapping TypeName="B2BSCMModel.TRX_DOC_HEADER">
+              <MappingFragment StoreEntitySet="TRX_DOC_HEADER">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Guid" ColumnName="Guid" />
+                <ScalarProperty Name="Trx_Doc_Id" ColumnName="Trx_Doc_Id" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="AttachmentStatus" ColumnName="AttachmentStatus" />
+                <ScalarProperty Name="DocType" ColumnName="DocType" />
+                <ScalarProperty Name="AttachmentName" ColumnName="AttachmentName" />
+                <ScalarProperty Name="PurchaseNo2" ColumnName="PurchaseNo2" />
+                <ScalarProperty Name="Uid" ColumnName="Uid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,40 @@
+﻿
+@model B2B_SCM.Models.Custom
+@Html.HiddenFor(x => x.UID_Chat)
+<div>
+    <ul id="inner-content-div" class="conversation-list slimscroll" style="max-height: 410px;" data-simplebar>
+        @*<li>
+                <div class="chat-day-title">
+                    <span class="title">Today</span>
+                </div>
+            </li>*@
+        @foreach (var item in Model.Custom_List_Chat)
+        {
+            <li class='@item.Odd'>
+                <div class="message-list">
+                    <div class="chat-avatar">
+                        @*<img src="assets/images/users/user-2.jpg" alt="">*@
+                    </div>
+                    <div class="conversation-text">
+                        <div class="ctext-wrap">
+                            <span class="user-name">@item.From</span>
+                            <p>
+                                @item.Chat
+                            </p>
+                        </div>
+                        <span class="time"> @item.Date.ToString("dd-MMM-yy HH:mm")</span>
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+</div>
+<script>
+    //$(document).ready(function () {
+    //    $('#inner-content-div').slimScroll({
+    //        start: 'bottom',
+    //        height: '410px'
+    //    });
+    //});
+
+</script>

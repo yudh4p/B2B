@@ -1,0 +1,213 @@
+﻿
+@{
+    ViewBag.Title = "Country";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model B2B_SCM.Models.Custom
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="mt-0 header-title">Master Country / Origin</h4>
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-outline-primary waves-effect waves-light" onclick="OnClickAdd()">New Country</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered dt-responsive nowrap" id="table_data" style="width: 100%">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Code</th>
+                                    <th>Name</th>
+                                    <th>Status</th>
+                                    <th>Last Updated By</th>
+                                    <th>Last Updated Date</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@using (Html.BeginForm("submit_new_country", "master", FormMethod.Post))
+{
+    <div id="modal_country" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <!-- Modal Body -->
+                <div class="modal-header">
+                    <h4 class="modal-title" id="txtHeaderPopup"></h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @Html.HiddenFor(model => model.ModeTransaction)
+                    <div class="row" style="padding-top: 10px;">
+                        <div class="col-md-6">
+                            <label class="form-label" for="CountryId">Country ID</label> <label style="color: red">*</label>
+                            @Html.TextBoxFor(model => model.CountryId, new { @class = "form-control", @id = "CountryId", @readonly = "readonly", @style = "background-color: #dee2e6" })
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="CountryName">Country Name</label> <label style="color: red">*</label>
+                            @Html.TextBoxFor(model => model.CountryName, new { @class = "form-control", @id = "CountryName", @required = "required" })
+                        </div>
+                    </div>
+
+                    
+                    <br />
+                    <div class="">
+                        <button type="submit" class="btn btn-outline-primary waves-effect waves-light" id="btnSubmit">Submit</button>
+                        <a href="#" class="btn btn-outline-danger waves-effect waves-light" data-bs-dismiss="modal">Cancel</a>
+                    </div>
+                </div>
+                <!-- End Modal Body -->
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts
+    {
+    <script>
+        function OnClickAdd() {
+            document.getElementById('ModeTransaction').value = 'NEW';
+            document.getElementById('txtHeaderPopup').innerHTML = 'Country - NEW';
+            document.getElementById('CountryId').value = 'AUTOMATIC';
+            document.getElementById('CountryName').value = '';
+            $('#modal_country').modal('show');
+        }
+
+        function OnClickEdit(id) {
+            var data = { id: id };
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("get_detail_country", "master")',
+                data: data,
+                success: function(result) {
+                    if (result.success) {
+                        document.getElementById('txtHeaderPopup').innerHTML = 'Country - EDIT';
+                        document.getElementById('ModeTransaction').value = 'EDIT';
+                        document.getElementById('CountryId').value = result.CountryId;
+                        document.getElementById('CountryName').value = result.CountryName;
+
+                        $('#modal_country').modal('show');
+                    } else {
+
+                    }
+                }
+            });
+        }
+
+        function OnClickDelete(id) {
+            var isValid = confirm('Are you sure want to deactive this record?');
+            if (isValid == false) {
+                return isValid;
+            }
+
+            var data = { id: id, status: "0" };
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("active_deactive_country", "master")',
+                data: data,
+                success: function(result) {
+                    Swal.fire(
+                        result.message,
+                        '',
+                        'info'
+                    );
+                    load_table();
+                }
+            });
+        }
+
+        function OnClickRestore(id) {
+            var isValid = confirm('Are you sure want to active this record?');
+            if (isValid == false) {
+                return isValid;
+            }
+
+            var data = { id: id, status: "1" };
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("active_deactive_country", "master")',
+                data: data,
+                success: function(result) {
+                    Swal.fire(
+                        result.message,
+                        '',
+                        'info'
+                    );
+                    load_table();
+                }
+            });
+        }
+        $(document).ready(function () {
+            load_table();
+        });
+
+          function load_table() {
+            var table = $('#table_data').DataTable();
+            table.destroy();
+            $('#table_data').DataTable({
+                "ajax": {
+                    "url": '@Url.Action("load_country", "master")',
+                    "type": "GET",
+                    "datatype": "json",
+                    dataSrc: function(data) {
+                        return $.parseJSON(data.data);
+                    }
+                },
+                "columns": [
+                    {
+                        "data": null, "autoWidth": true,
+                        mRender: function (data, type, row) {
+                            if (row.STATUS == 'ACTIVE') {
+                                return '<span class="contact-edit" onclick="OnClickEdit(\'' + row.ID + '\');"><img src="/assets/img/svg/c-edit.svg" alt="" class="svg"></span>&ensp;<span class="contact-close" onclick="return OnClickDelete(\'' + row.ID + '\');"><img src="/assets/img/svg/c-close.svg" alt="" class="svg"></span>';
+                            }
+                            else {
+                                return '<span class="text-center" onclick="return OnClickRestore(\'' + row.ID + '\');"><img src="/assets/img/svg/upload-down.svg" alt="" class="svg"></span>';
+                            }
+                        }
+                    },
+                    {
+                        "data": "ID", "autoWidth": true,
+                    },
+                    {
+                        "data": "NAME", "autoWidth": true,
+                    },
+                    {
+                        "data": "STATUS", "autoWidth": true,
+                        mRender: function (data, type, row) {
+                            if (row.STATUS == 'ACTIVE') {
+                                return '<span style="color: blue"> Active </span>';
+                            }
+                            else {
+                                return '<span style="color: red"> Deactive </span>';
+                            }
+                        }
+                    },
+                    {
+                        "data": "UPDBY", "autoWidth": true,
+                    },
+                    {
+                        "data": "UPDDATE", "autoWidth": true,
+                    },
+                ],
+                "bLengthChange": false,
+                "bFilter": true,
+                "order": [[0, "asc"]],
+            });
+            return true;
+        }
+
+    </script>
+
+}

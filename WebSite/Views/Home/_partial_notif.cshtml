@@ -1,0 +1,44 @@
+﻿
+
+
+<a class="nav-link dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+    <i class="fe-bell noti-icon"></i>
+
+    <div id="_partial_notif_header">
+    </div>
+</a>
+<div class="dropdown-menu dropdown-menu-end dropdown-lg">
+
+    <!-- item-->
+    <div class="dropdown-item noti-title">
+        <h5 class="m-0">
+            <span class="float-end">
+                <a href="" class="text-dark">
+                    @*<small>Clear All</small>*@
+                </a>
+            </span>Notification
+        </h5>
+    </div>
+
+    <div class="noti-scroll" data-simplebar>
+        <div id="_partial_notif_content">
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        ShowNotifHeader();
+        ShowNotifContent();
+    })
+
+    function ShowNotifHeader() {
+        $("#_partial_notif_header").load('@Url.Action("_partial_notif_header", "home")');
+        window.setTimeout("ShowNotifHeader()", 5000); // Here 1000(milliseconds) means one 1 Sec
+    }
+
+    function ShowNotifContent() {
+        $("#_partial_notif_content").load('@Url.Action("_partial_notif_content", "home")');
+        window.setTimeout("ShowNotifContent()", 5000); // Here 1000(milliseconds) means one 1 Sec
+    }
+</script>

@@ -1,0 +1,158 @@
+﻿
+@model B2B_SCM.Models.Custom
+
+<div class="row block_upload">
+    @foreach (var item in Model.Custom_List_Doc_Upload)
+    {
+        <div class="col-md-3">
+            <div class="mb-3">
+                @if (item.Required)
+                {
+                    <label class="form-label">@item.Name (<span style="color: red">Mandatory</span>) <span style="color: lightgreen;font-style: italic" id="@("lblStatus" + item.Id)">@item.IsUpload</span> </label>
+                }
+                else
+                {
+                    <label class="form-label">@item.Name <span style="color: lightgreen; font-style: italic" id="@("lblStatus" + item.Id)">@item.IsUpload</span></label>
+                }
+                <input type="file" class="form-control" id="@("txtFile" + item.Id)" name="@("txtFile" + item.Id)" accept="application/pdf">
+                @if (item.Id == 1)
+                {
+                    <input type="text" class="form-control" id="@("txtContractNo" + item.Id)" name="@("txtContractNo" + item.Id)" placeholder="Contract No" required value="@item.ContractNo">
+                    <input type="text" class="form-control custom_date" id="@("txtContractDate" + item.Id)" name="@("txtContractDate" + item.Id)" placeholder="Contract Date" required value="@item.ContractDateString">
+                }
+                <div class="input-group border border-primary">
+                    <input type="text" class="form-control" id="@("txtRemark" + item.Id)" name="@("txtRemark" + item.Id)" placeholder="Remark ..." autocomplete="off"> 
+                    <button class="btn input-group-text btn-dark waves-effect waves-light" type="button" onclick="return Check_File(@item.Id, '@("lblStatus" + item.Id)')">Submit</button>
+                </div>
+            </div>
+        </div>
+        <br />
+    }
+</div>
+
+<script src="/assets/libs/flatpickr/flatpickr.min.js"></script>
+<script src="/assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<script src="~/assets/blockUi.js"></script>
+
+<script>
+    $(".custom_date").flatpickr({ dateFormat: "d-m-Y" });
+    $(document).ready(function () {
+        var date = new Date();
+
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+
+        if (month < 10) month = "0" + month;
+        if (day < 10) day = "0" + day;
+
+        var today = year + "-" + month + "-" + day;
+        document.getElementById("txtPaymentDateUpload").value = today;
+    });
+
+    function OnUpload() {
+        $('div.block_upload').block({
+            message: '<h1>Please wait ...</h1>',
+            css: { border: '3px solid #a00' }
+        });
+    }
+
+    function clearFileInput(id) {
+        document.getElementById("txtFile" + id).value = null
+    }
+
+    function Check_File(DocType, lblstatus) {
+        var data = { purchaseno: document.getElementById("PurchaseIDE2").value, doctype: DocType };
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("Check_Document", "home")',
+            data: data,
+            success: function(result) {
+                if (result.Success) {
+                    if (result.Status == 1) {
+                        Swal.fire({
+                            title: 'Document is already exists',
+                            text: "Waiting checking from BFM ...",
+                            icon: "error",
+                            confirmButtonColor: "#28bb4b",
+                            confirmButtonText: "Ok"
+                        })
+                        $('div.block_upload').unblock();
+                    }
+                    else if (result.Status == 3 || result.Status == 4) {
+                        Swal.fire({
+                            title: 'Document is already final/completed',
+                            text: "You won't be able to continue this!",
+                            icon: "error",
+                            confirmButtonColor: "#28bb4b",
+                            confirmButtonText: "Ok"
+                        });
+                        $('div.block_upload').unblock();
+                    }
+                    else {
+                        uploadFile(DocType, lblstatus);
+                    }
+                }
+                else {
+                    uploadFile(DocType, lblstatus);
+                }
+            }
+        });
+        return true;
+    }
+
+    function uploadFile(DocType, lblstatus) {
+        OnUpload();
+
+        var Image = document.getElementById("txtFile" + DocType).files[0];
+        var formData = new FormData();
+        formData.append("DocType", DocType);
+        formData.append("Image", Image);
+        formData.append("PNO", document.getElementById("PurchaseIDE2").value);
+        formData.append("Remark", document.getElementById("txtRemark" + DocType).value);
+
+        try {
+            formData.append("ContractNo", document.getElementById("txtContractNo" + DocType).value);
+            formData.append("ContractDate", document.getElementById("txtContractDate" + DocType).value);
+        }
+        catch {
+            formData.append("ContractNo", "");
+            formData.append("ContractDate", "");
+        }
+
+        try {
+            formData.append("PaymentDate", document.getElementById("txtPaymentDateUpload").value);
+        } catch {
+            formData.append("PaymentDate", "");
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Upload", "home")',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (result) {
+                if (result.Success) {
+                    Swal.fire(
+                        result.Message,
+                        '',
+                        'info'
+                    );
+                    document.getElementById(lblstatus).innerText = "Uploaded";
+                    $('div.block_upload').unblock();
+                    //$('#modal_upload_document').modal('hide');
+                    load_table_modal_doc(document.getElementById("PurchaseIDE2").value);
+                } else {
+                    Swal.fire(
+                        result.Message,
+                        '',
+                        'error'
+                    );
+                    $('div.block_upload').unblock();
+                }
+            }
+        });
+    }
+</script>

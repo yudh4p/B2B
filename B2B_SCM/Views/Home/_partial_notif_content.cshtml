@@ -1,0 +1,19 @@
+﻿
+@model B2B_SCM.Models.Custom2
+
+
+@foreach (var item in Model.Custom_List_Notif)
+{
+    <a href="javascript:void(0);" class="dropdown-item notify-item">
+        <div class="notify-icon bg-info">
+            <i class="mdi mdi-android-messages"></i>
+        </div>
+        <p class="notify-details">New Message</p>
+        <p class="text-muted mb-0 user-msg">
+            <small>@item.Message</small>
+            <br />
+            <small class="text-muted">@item.Date</small>
+        </p>
+    </a>
+}
+

@@ -1,0 +1,120 @@
+﻿@using System.Data
+@model DataTable
+
+<link href="~/assets/custom/timeline.css" rel="stylesheet" type="text/css" />
+<br />
+<div class="container">
+
+
+    <div class="row">
+        <div class="col">
+            <div class="timeline-steps aos-init aos-animate" data-aos="fade-up">
+                <div class="timeline-step">
+                    <div class="timeline-content">
+                        @if (Model.Rows[0]["CONTRACT_SIGN"].ToString() == "0")
+                        {
+                            <div class="inner-circle-red"></div>
+                        }
+                        else
+                        {
+                            <div class="inner-circle"></div>
+                        }
+                        <p class="h6 mt-3 mb-1">Contract Sign</p>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="timeline-content">
+                        @if (Model.Rows[0]["VESSEL"].ToString() == "0")
+                        {
+                            <div class="inner-circle-red"></div>
+                        }
+                        else
+                        {
+                            <div class="inner-circle"></div>
+                        }
+                        <p class="h6 mt-3 mb-1">Vessel Nomination</p>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="timeline-content">
+                        @if (Model.Rows[0]["DI"].ToString() == "0")
+                        {
+                            <div class="inner-circle-red"></div>
+                        }
+                        else
+                        {
+                            <div class="inner-circle"></div>
+                        }
+                        <p class="h6 mt-3 mb-1">Doc Instructions</p>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="timeline-content">
+                        @if (Model.Rows[0]["SA"].ToString() == "0")
+                        {
+                            <div class="inner-circle-red"></div>
+                        }
+                        else
+                        {
+                            <div class="inner-circle"></div>
+                        }
+                        <p class="h6 mt-3 mb-1">Shipping advice</p>
+                    </div>
+                </div>
+                <div class="timeline-step mb-0">
+                    <div class="timeline-content">
+                        @if (Model.Rows[0]["DOC"].ToString() == "0")
+                        {
+                            <div class="inner-circle-red"></div>
+                        }
+                        else
+                        {
+                            <div class="inner-circle"></div>
+                        }
+                        <p class="h6 mt-3 mb-1">Documents</p>
+                    </div>
+                </div>
+                <div class="timeline-step mb-0">
+                    <div class="timeline-content">
+                        @if (Model.Rows[0]["LTC"].ToString() == "0")
+                        {
+                            <div class="inner-circle-red"></div>
+                        }
+                        else
+                        {
+                            <div class="inner-circle"></div>
+                        }
+                        <p class="h6 mt-3 mb-1">LTC</p>
+                    </div>
+                </div>
+                <div class="timeline-step mb-0">
+                    <div class="timeline-content">
+                        @if (Model.Rows[0]["VENDOR_PAYMENT"].ToString() == "0")
+                        {
+                            <div class="inner-circle-red"></div>
+                        }
+                        else
+                        {
+                            <div class="inner-circle"></div>
+                        }
+                        <p class="h6 mt-3 mb-1">Vendor Payment</p>
+                    </div>
+                </div>
+                <div class="timeline-step mb-0">
+                    <div class="timeline-content">
+                        @if (Model.Rows[0]["CLOSE"].ToString() == "0")
+                        {
+                            <div class="inner-circle-red"></div>
+                        }
+                        else
+                        {
+                            <div class="inner-circle"></div>
+                        }
+                        <p class="h6 mt-3 mb-1">Close</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*<script src="~/assets/custom/timeline.js"></script>*@

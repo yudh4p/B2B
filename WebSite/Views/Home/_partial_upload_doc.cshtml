@@ -1,0 +1,159 @@
+﻿
+@model B2B_SCM.Models.Custom
+
+@foreach (var item in Model.Custom_List_Doc_Upload)
+{
+    <div class="row">
+        <div class="col-md-12">
+            @if (item.Required)
+            {
+                <label class="form-label">@item.Name (<span style="color: red">Mandatory</span>)</label>
+            }
+            else
+            {
+                <label class="form-label">@item.Name</label>
+            }
+            <div class="input-group border border-primary">
+                <input type="file" class="form-control" id="@("txtFile" + item.Id)" name="@("txtFile" + item.Id)" accept="application/pdf">
+                @if (item.Name.Contains("SALES CONTRACT"))
+                {
+                    <input type="text" class="form-control" id="@("txtContractNo" + item.Id)" name="@("txtContractNo" + item.Id)" placeholder="Contract No" required value="@item.ContractNo">
+                    <input type="date" class="form-control" id="@("txtContractDate" + item.Id)" name="@("txtContractDate" + item.Id)" placeholder="Contract Date" required value="@item.ContractDateString">
+                }
+                else if (item.Id == 30)
+                {
+                    <input type="date" class="form-control" id="txtPaymentDateUpload" name="txtPaymentDateUpload" placeholder="Payment Date" required>
+                }
+
+                <input type="text" class="form-control" id="@("txtRemark" + item.Id)" name="@("txtRemark" + item.Id)" placeholder="Remark ...">
+                <button class="btn input-group-text btn-dark waves-effect waves-light" type="button" onclick="return Check_File(@item.Id)">Submit</button>
+            </div>
+        </div>
+    </div>
+    <br />
+}
+
+<script src="/assets/libs/flatpickr/flatpickr.min.js"></script>
+<script src="/assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+
+<script>
+    //$("#txtPaymentDateUpload").flatpickr({ dateFormat: "d-m-Y" });
+    $(document).ready(function () {
+        var date = new Date();
+
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+
+        if (month < 10) month = "0" + month;
+        if (day < 10) day = "0" + day;
+
+        var today = year + "-" + month + "-" + day;
+        document.getElementById("txtPaymentDateUpload").value = today;
+    });
+
+    function clearFileInput(ctrl) {
+        try {
+            ctrl.value = null;
+        } catch (ex) { }
+        if (ctrl.value) {
+            ctrl.parentNode.replaceChild(ctrl.cloneNode(true), ctrl);
+        }
+    }
+
+    function Check_File(DocType) {
+        var data = { purchaseno: document.getElementById("PurchaseIDE2").value, doctype: DocType };
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("Check_Document", "home")',
+            data: data,
+            success: function(result) {
+            if (result.Success) {
+            if (result.Status == 1) {
+            Swal.fire({
+            title: 'Document is already exists',
+            text: "Waiting checking from BFM ...",
+            icon: "error",
+            confirmButtonColor: "#28bb4b",
+            confirmButtonText: "Ok"
+            })
+            }
+            else if (result.Status == 3 || result.Status == 4) {
+            Swal.fire({
+            title: 'Document is already final/completed',
+            text: "You won't be able to continue this!",
+            icon: "error",
+            confirmButtonColor: "#28bb4b",
+            confirmButtonText: "Ok"
+            });
+            }
+            else {
+            uploadFile(DocType);
+            }
+            }
+            else {
+            uploadFile(DocType);
+            }
+            //clearFileInput(document.getElementById("files"));
+            }
+            });
+            return true;
+            }
+
+            function uploadFile(DocType) {
+            var Image = document.getElementById("txtFile" + DocType).files[0];
+
+                var formData = new FormData();
+            formData.append("DocType", DocType);
+            formData.append("Image", Image);
+            formData.append("PNO", document.getElementById("PurchaseIDE2").value);
+                formData.append("Remark", document.getElementById("txtRemark" + DocType).value);
+
+            try {
+            formData.append("ContractNo", document.getElementById("txtContractNo" + DocType).value);
+            formData.append("ContractDate", document.getElementById("txtContractDate" + DocType).value);
+            } catch {
+            formData.append("ContractNo", "");
+            formData.append("ContractDate", "");
+                }
+
+                try {
+                    formData.append("PaymentDate", document.getElementById("txtPaymentDateUpload").value);
+
+                } catch {
+                    formData.append("PaymentDate", "");
+
+                }
+
+            $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Upload", "home")',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (result) {
+            //location.reload();
+            if (result.Success) {
+            Swal.fire(
+            result.Message,
+            '',
+            'info'
+            );
+
+            $('#modal_upload_document').modal('hide');
+            load_table_modal_doc(document.getElementById("PurchaseIDE2").value);
+            //$('#modal_header_edit').modal('show');
+            } else {
+            Swal.fire(
+            result.Message,
+            '',
+            'error'
+            );
+            }
+            }
+            });
+            //clearFileInput(document.getElementById("txtFile" + DocType));
+
+            }
+</script>

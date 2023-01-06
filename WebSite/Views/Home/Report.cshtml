@@ -1,0 +1,286 @@
+﻿@model B2B_SCM.Models.Custom
+@{
+    ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles
+{
+    <style>
+    </style>
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="mt-0 header-title">Report</h4>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">Date</label>
+                            <div class="input-group" style="width: 500px">
+                                @Html.TextBoxFor(model => model.DateFrom, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date", @id = "DateFrom" })
+                                @Html.TextBoxFor(model => model.DateTo, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date", @id = "DateTo" })
+                                <button type="button" class="btn waves-effect waves-light btn-primary" onclick="load_table()">Apply</button>
+                            </div>
+                        </div>
+                    </div>
+                    @*<div style="text-align: right">
+                        </div>*@
+                    <br />
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover nowrap" id="table_data_index" style="width: 100%">
+                            <thead>
+                                <tr>
+                                    <th>PURCHASE NO</th>
+                                    <th>WHEAT NAME</th>
+                                    <th>TRADE QTY</th>
+                                    <th>FINAL QTY</th>
+                                    <th>PRICE PER MT</th>
+                                    <th>SHIPMENT FROM</th>
+                                    <th>SHIPMENT TO</th>
+                                    <th>ETD</th>
+                                    <th>ETA</th>
+                                    <th>VESSEL</th>
+                                    <th>LOAD PORT</th>
+                                    <th>DISC PORT</th>
+                                    <th>CONTRACT NO</th>
+                                    <th>CONTRACT DATE</th>
+                                    <th>STATUS DESDEM</th>
+                                    <th>INVOICE DUE DATE</th>
+                                    <th>PAYMENT DATE</th>
+                                    <th>SALES CONTRACT SELLER</th>
+                                    <th>ADDENDUM CONTRACT SELLER</th>
+                                    <th>SALES CONTRACT SHIPPER</th>
+                                    <th>ADDENDUM CONTRACT SHIPPER</th>
+                                    <th>DOCUMENT INSTRUCTIONS</th>
+                                    <th>BL</th>
+                                    <th>INVOICE</th>
+                                    <th>PACKING LIST</th>
+                                    <th>FUMIGATION CERT</th>
+                                    <th>PHYTOSANITARY CERT</th>
+                                    <th>PRIOR NOTICE</th>
+                                    <th>CERTIFICATE OF ANALYSIS</th>
+                                    <th>CERTIFICATE OF WEIGHT</th>
+                                    <th>CERTIFICATE OF ORIGIN</th>
+                                    <th>NON GMO CERT</th>
+                                    <th>NON RADIATION CERT</th>
+                                    <th>HUMAN CONSUMPTION CERT</th>
+                                    <th>PESTICIDE RESIDUE CERT</th>
+                                    <th>HOLD CLEANLINESS CERT</th>
+                                    <th>CROP YEAR CERT</th>
+                                    <th>HATCH SEALING CERT</th>
+                                    <th>MYCOTOXIN CERT</th>
+                                    <th>HEAVY METAL CERT</th>
+                                    <th>TEST REPORT COA From Registered Lab</th>
+                                    <th>OTHERS</th>
+                                    <th>DEBIT NOTE</th>
+                                    <th>MT103</th>
+                                    <th>MT103 PAYMENT</th>
+                                    <th>LAYTIME CALCULATION</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+
+    <script src="https://cdn.datatables.net/fixedcolumns/4.1.0/js/dataTables.fixedColumns.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            load_table();
+        })
+
+        function load_table() {
+            var table = $('#table_data_index').DataTable();
+            table.destroy();
+
+            $('#table_data_index').DataTable({
+                "ajax": {
+                    "url": '@Url.Action("load_report", "home")?' + "fromDate=" + document.getElementById('DateFrom').value + "&toDate=" + document.getElementById('DateTo').value,
+                    "type": "GET",
+                    "datatype": "json",
+                    dataSrc: function(data) {
+                        return $.parseJSON(data.data);
+                    }
+                },
+                "columns": [
+                    {
+                        "data": "PURCHASE_NO", "autoWidth": true,
+                    },
+                    {
+                        "data": "WHEAT_NAME", "autoWidth": true,
+                    },
+                    {
+                        "data": "TRADE_QTY", "autoWidth": true,
+                    },
+                    {
+                        "data": "FINAL_QTY", "autoWidth": true,
+                    },
+                    {
+                        "data": "PRICE_PER_MT", "autoWidth": true,
+                    },
+                    {
+                        "data": "SHIPMENT_FROM", "autoWidth": true,
+                    },
+                    {
+                        "data": "SHIPMENT_TO", "autoWidth": true,
+                    },
+                    {
+                        "data": "ETD", "autoWidth": true,
+                    },
+                    {
+                        "data": "ETA", "autoWidth": true,
+                    },
+                    {
+                        "data": "VESSEL", "autoWidth": true,
+                    },
+                    {
+                        "data": "LOAD_PORT", "autoWidth": true,
+                    },
+                    {
+                        "data": "DISC_PORT", "autoWidth": true,
+                    },
+                    {
+                        "data": "CONTRACT_NO", "autoWidth": true,
+                    },
+                    {
+                        "data": "CONTRACT_DATE", "autoWidth": true,
+                    },
+                    {
+                        "data": "STATUS_DESDEM", "autoWidth": true,
+                    },
+                    {
+                        "data": "INVOICE_DUE_DATE", "autoWidth": true,
+                    },
+                    {
+                        "data": "PAYMENT_DATE", "autoWidth": true,
+                    },
+                    {
+                        "data": "SALES_CONTRACT_SELLER", "autoWidth": true,
+                    },
+                    {
+                        "data": "ADDENDUM_CONTRACT_SELLER", "autoWidth": true,
+                    },
+                    {
+                        "data": "SALES_CONTRACT_SHIPPER", "autoWidth": true,
+                    },
+                    {
+                        "data": "ADDENDUM_CONTRACT_SHIPPER", "autoWidth": true,
+                    },
+                    {
+                        "data": "DOCUMENT_INSTRUCTIONS", "autoWidth": true,
+                    },
+                    {
+                        "data": "BL", "autoWidth": true,
+                    },
+                    {
+                        "data": "INVOICE", "autoWidth": true,
+                    },
+                    {
+                        "data": "PACKING_LIST", "autoWidth": true,
+                    },
+                    {
+                        "data": "FUMIGATION_CERT", "autoWidth": true,
+                    },
+                    {
+                        "data": "PHYTOSANITARY_CERT", "autoWidth": true,
+                    },
+                    {
+                        "data": "PRIOR_NOTICE", "autoWidth": true,
+                    },
+                    {
+                        "data": "CERTIFICATE_OF_ANALYSIS", "autoWidth": true,
+                    },
+                    {
+                        "data": "CERTIFICATE_OF_WEIGHT", "autoWidth": true,
+                    },
+                    {
+                        "data": "CERTIFICATE_OF_ORIGIN", "autoWidth": true,
+                    },
+                    {
+                        "data": "NON_GMO_CERT", "autoWidth": true,
+                    },
+                    {
+                        "data": "NON_RADIATION_CERT", "autoWidth": true,
+                    },
+                    {
+                        "data": "HUMAN_CONSUMPTION_CERT", "autoWidth": true,
+                    },
+                    {
+                        "data": "PESTICIDE_RESIDUE_CERT", "autoWidth": true,
+                    },
+                    {
+                        "data": "HOLD_CLEANLINESS_CERT", "autoWidth": true,
+                    },
+                    {
+                        "data": "CROP_YEAR_CERT", "autoWidth": true,
+                    },
+                    {
+                        "data": "HATCH_SEALING_CERT", "autoWidth": true,
+                    },
+                    {
+                        "data": "MYCOTOXIN_CERT", "autoWidth": true,
+                    },
+                    {
+                        "data": "HEAVY_METAL_CERT", "autoWidth": true,
+                    },
+                    {
+                        "data": "TEST_REPORT_COA_FROM_REGISTERED_LAB", "autoWidth": true,
+                    },
+                    {
+                        "data": "OTHERS", "autoWidth": true,
+                    },
+                    {
+                        "data": "DEBIT_NOTE", "autoWidth": true,
+                    },
+                    {
+                        "data": "MT103", "autoWidth": true,
+                    },
+                    {
+                        "data": "MT103_PAYMENT", "autoWidth": true,
+                    },
+                    {
+                        "data": "LAYTIME_CALCULATION", "autoWidth": true,
+                    },
+                ],
+                "bLengthChange": true,
+                "bFilter": true,
+                "order": [[0, "desc"]],
+                "dom": 'Bfrtip',
+                "buttons": [
+                    {
+                        extend: 'excel',
+                        className: 'btn btn-dark rounded-0',
+                        text: '<i class="far fa-file-pdf"></i> Excel'
+                    },
+                    {
+                        extend: 'pdf',
+                        className: 'btn btn-dark rounded-0',
+                        text: '<i class="far fa-file-pdf"></i> Pdf'
+                    },
+                    {
+                        extend: 'csv',
+                        className: 'btn btn-dark rounded-0',
+                        text: '<i class="fas fa-file-csv"></i> CSV'
+                    },
+                    {
+                        extend: 'print',
+                        className: 'btn btn-dark rounded-0',
+                        text: '<i class="fas fa-print"></i> Print'
+                    }
+                ],
+                scrollX: true,
+            });
+        }
+    </script>
+
+}

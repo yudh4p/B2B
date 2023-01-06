@@ -1,0 +1,1590 @@
+﻿
+@{
+    ViewBag.Title = "Index - Shipper";
+    Layout = "~/Views/Shared/_LayoutSeller.cshtml";
+}
+
+@model B2B_SCM.Models.Custom
+
+@section Styles
+    {
+    <link href="/assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="mt-0 header-title">Transaction Purchase Wheat - SHIPPER</h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="form-label">Date</label>
+                            <div class="input-group" style="width: 500px">
+                                @Html.TextBoxFor(model => model.DateFrom, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date", @id = "DateFrom" })
+                                @Html.TextBoxFor(model => model.DateTo, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date", @id = "DateTo" })
+                                <button type="button" class="btn waves-effect waves-light btn-primary" onclick="load_table()">Apply</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover nowrap" id="table_data" style="width: 100%">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>PNO</th>
+                                    <th>Date</th>
+                                    <th>Trade Qty (MT)</th>
+                                    <th>Shipment From</th>
+                                    <th>Shipment To</th>
+                                    <th>Origin</th>
+                                    <th>Shipper</th>
+                                    <th>Seller</th>
+                                    <th>Remark</th>
+                                    <th>Status</th>
+                                    <th>Last Updated By</th>
+                                    <th>Last Updated Date</th>
+                                    <th>PID</th>
+                                    <th>Origin_Code</th>
+                                    <th>Shipper_Code</th>
+                                    <th>Seller_Code</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm("update_shipper", "shipper", FormMethod.Post))
+{
+    <div id="modal_header_edit" class="modal fade" data-bs-keyboard="false" data-bs-backdrop="static" style="border: solid">
+        <div class="modal-dialog modal-full-width modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content border border-primary">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modalEditTitle">Purchase Wheat - EDIT</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <!-- Modal Body -->
+                @Html.HiddenFor(model => model.PurchaseIDE)
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <div class="row clearfix">
+                                <div class="col-sm-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Purchase No</label>
+                                        @Html.TextBoxFor(model => model.PurchaseNoE, new { @class = "form-control", @id = "PurchaseNoE", @readonly = "readonly", @style = "color: black;background-color: #dee2e6" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Trade Qty (MT)</label>
+                                        @Html.TextBoxFor(model => model.TradeQtyE, new { @class = "form-control", @id = "TradeQtyE", @readonly = "readonly", @style = "color: black;background-color: #dee2e6" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row clearfix">
+                                <div class="col-sm-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Shipment Periode (From)</label>
+                                        @Html.TextBoxFor(model => model.ShipmentFromE, new { @class = "form-control", @id = "ShipmentFromE", @readonly = "readonly", @type = "date", @style = "color: black;background-color: #dee2e6" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Shipment Periode (To)</label>
+                                        @Html.TextBoxFor(model => model.ShipmentToE, new { @class = "form-control", @id = "ShipmentToE", @readonly = "readonly", @type = "date", @style = "color: black;background-color: #dee2e6" })
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row clearfix">
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Origin</label>
+                                        @Html.TextBoxFor(model => model.OriginE, new { @class = "form-control", @id = "OriginE", @readonly = "readonly", @style = "color: black;background-color: #dee2e6" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Shipper</label>
+                                        @Html.TextBoxFor(model => model.ShipperE, new { @class = "form-control", @id = "ShipperE", @readonly = "readonly", @style = "color: black;background-color: #dee2e6" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Seller</label>
+                                        @Html.TextBoxFor(model => model.SellerE, new { @class = "form-control", @id = "SellerE", @readonly = "readonly", @style = "color: black;background-color: #dee2e6" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row clearfix">
+                                <div class="col-sm-12">
+                                    <label class="form-label">Remark</label>
+                                    @Html.TextAreaFor(model => model.RemarkE, new { @class = "form-control", @id = "RemarkE", @readonly = "readonly", @style = "color: black;background-color: #dee2e6" })
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row clearfix">
+                                <div class="accordion custom-accordion" id="custom-accordion-one">
+                                    <div class="card mb-0">
+                                        <div class="card-header" id="headingLTC">
+                                            <h5 class="m-0 position-relative">
+                                                <a class="custom-accordion-title text-reset d-block" data-bs-toggle="collapse" href="#collapseLTC" aria-expanded="true" aria-controls="collapseLTC" id="title-ltc">
+                                                    LTC <i class="mdi mdi-chevron-down accordion-arrow"></i>
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseLTC" class="collapse show">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-sm-3">
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Comm Date</label>
+                                                            @Html.TextBoxFor(model => model.CommDiscDateH, new { @class = "form-control", @id = "CommDiscDateH", @readonly = "readonly", @style = "background-color: #dee2e6" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Comp Date</label>
+                                                            @Html.TextBoxFor(model => model.CompDiscDateH, new { @class = "form-control", @id = "CompDiscDateH", @readonly = "readonly", @style = "background-color: #dee2e6" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Dem/Des</label>
+                                                            @Html.TextBoxFor(model => model.StatusDesDem, new { @class = "form-control", @id = "StatusDesDem", @readonly = "readonly", @style = "background-color: #dee2e6" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Status</label>
+                                                            @Html.TextBoxFor(model => model.StatusDesDemConfirm, new { @class = "form-control", @id = "StatusDesDemConfirm", @readonly = "readonly", @style = "background-color: #dee2e6" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div style="text-align: right!important">
+                                                    <button class="btn btn-outline-primary waves-effect waves-light" type="button" id="btnProcessLTC" onclick="OnProcessLTC()">Process</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <br />
+                            <div class="row clearfix">
+                                <h4 class="mt-0 header-title">Detail items</h4>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover nowrap" id="table_data_item">
+                                        <thead>
+                                            <tr>
+                                                <td rowspan="2">#</td>
+                                                <td rowspan="2">Wheat</td>
+                                                <td rowspan="2">Est. Qty</td>
+                                                <td rowspan="2">Final Qty</td>
+                                                <td colspan="4" style="text-align: center; font: bold">Loading Details</td>
+                                                <td colspan="4" style="text-align: center; font: bold">Discharge Details</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Port of Loading</td>
+                                                <td>ETA Load Port</td>
+                                                <td>ETB Load Port</td>
+                                                <td>ETD Load Port</td>
+                                                <td>Port of Discharge</td>
+                                                <td>ETA Disport</td>
+                                                <td>ETB Disport</td>
+                                                <td>ETC Disport</td>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-7">
+                            <div class="accordion custom-accordion" id="custom-accordion-one">
+
+                                <div class="card mb-0">
+                                    <div class="card-header" id="headingFive">
+                                        <h5 class="m-0 position-relative">
+                                            <a class="custom-accordion-title text-reset d-block" data-bs-toggle="collapse" href="#collapse2" aria-expanded="true" aria-controls="collapse2">
+                                                Vessel Information <i class="mdi mdi-chevron-down accordion-arrow"></i>
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="collapse2" class="collapse show">
+                                        <div class="card-body">
+                                            <div class="row clearfix">
+                                                <div class="col-sm-3">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Vessel Name</label>
+                                                        @Html.TextBoxFor(model => model.VesselName, new { @class = "form-control", @id = "VesselName", @style = "color: black" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Vessel Detail/Specs</label>
+                                                        @Html.TextBoxFor(model => model.VesselDetail, new { @class = "form-control", @id = "VesselDetail", @style = "color: black" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Dem/Des Rate</label>
+                                                        @Html.TextBoxFor(model => model.DemDes, new { @class = "form-control", @id = "DemDes", @style = "color: black" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Appointed Agent</label>
+                                                        @Html.TextBoxFor(model => model.AppointAgent, new { @class = "form-control", @id = "AppointAgent", @style = "color: black" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style="text-align: right">
+                                                <button type="button" class="btn btn-outline-primary waves-effect waves-light" id="btnSubmit" onclick="OnClickUpdateVesselConf()">Update Information</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card mb-0">
+                                    <div class="card-header" id="headingAWB">
+                                        <h5 class="m-0 position-relative">
+                                            <a class="custom-accordion-title text-reset d-block" data-bs-toggle="collapse" href="#collapseAWB" aria-expanded="true" aria-controls="collapseAWB">
+                                                AWB Information <i class="mdi mdi-chevron-down accordion-arrow"></i>
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseAWB" class="collapse show">
+                                        <div class="card-body">
+                                            <div style="text-align: right">
+                                                <button type="button" class="btn btn-outline-primary waves-effect waves-light" onclick="OnClickNewAWB()">New AWB</button>
+                                            </div>
+                                            <div class="row clearfix">
+                                                <div class="col-sm-12">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-striped table-bordered table-hover nowrap" id="table_data_awb" style="width: 100%">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>#</th>
+                                                                    <th>Awb No</th>
+                                                                    <th>Courir</th>
+                                                                    <th>Remark</th>
+                                                                    <th>By</th>
+                                                                    <th>Date</th>
+                                                                </tr>
+                                                            </thead>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion custom-accordion" id="custom-accordion-one">
+                                <div class="card mb-0">
+                                    <div class="card-header" id="headingNine">
+                                        <h5 class="m-0 position-relative">
+                                            <a class="custom-accordion-title text-reset d-block" data-bs-toggle="collapse" href="#collapse3" aria-expanded="true" aria-controls="collapse3">
+                                                Document History <i class="mdi mdi-chevron-down accordion-arrow"></i>
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="collapse3" class="collapse show">
+                                        <div class="card-body">
+                                            <div style="text-align: right">
+                                                <a href="#" class="btn btn-outline-warning waves-effect waves-light" onclick="load_table_modal_doc(document.getElementById('PurchaseIDE').value)">Refresh Document</a>
+                                                <button type="button" class="btn btn-outline-primary waves-effect waves-light" onclick="OnClickUpload()">Upload Doc</button>
+                                            </div>
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-bordered table-hover nowrap" id="table_data_doc" style="width: 100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            @*<th>Doc ID</th>*@
+                                                            <th>Doc Type</th>
+                                                            <th>Comment</th>
+                                                            <th>Status</th>
+                                                            <th>By</th>
+                                                            <th>Date</th>
+                                                            <th></th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <div style="text-align: right">
+                        <a href="#" class="btn btn-outline-danger waves-effect waves-light" data-bs-dismiss="modal">Cancel</a>
+                        <button class="btn btn-outline-warning waves-effect waves-light" type="button" onclick="OnRefreshModal()">Refresh</button>
+                        @*<button type="button" class="btn btn-outline-primary waves-effect waves-light" onclick="OnClickLTC()">LTC</button>*@
+                    </div>
+                </div>
+                <!-- End Modal Body -->
+            </div>
+        </div>
+    </div>
+}
+
+
+<div id="modal_upload_document" class="modal fade" data-bs-keyboard="false" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content border border-info">
+            <div class="modal-header">
+                <h4 class="modal-title">Upload Document</h4>
+                @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>*@
+            </div>
+            <div class="modal-body">
+                @Html.HiddenFor(x => x.PurchaseIDE2)
+                <div id="_partial_upload_doc">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div style="text-align: right">
+                    <a href="#" class="btn btn-outline-danger waves-effect waves-light" onclick="OnClickCancelUpload()">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal_upload_awb" class="modal fade" data-bs-keyboard="false" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content border border-info">
+            <div class="modal-header">
+                <h4 class="modal-title">Add AWB</h4>
+            </div>
+            @Html.HiddenFor(x => x.UID_AWB)
+            @Html.HiddenFor(x => x.ModeTransaction)
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="mb-3">
+                            <label class="form-label">Courier</label>
+                            @Html.DropDownListFor(model => model.Courier, Model.CourierList, new { @class = "form-control", @id = "Courier", @name = "Courier" })
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="mb-3">
+                            <label class="form-label">AWB No</label>
+                            @Html.TextBoxFor(model => model.AWB, new { @class = "form-control", @id = "AWB", @name = "AWB" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="mb-3">
+                            <label class="form-label">Remark</label>
+                            @Html.TextAreaFor(model => model.RemarkAWB, new { @class = "form-control", @id = "RemarkAWB", @name = "RemarkAWB" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div style="text-align: right">
+                    <a href="#" class="btn btn-outline-danger waves-effect waves-light" onclick="OnClickCancelAWB()">Cancel</a>
+                    <button type="button" class="btn btn-outline-primary waves-effect waves-light" onclick="OnClickSaveAWB()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal_conversation" class="modal fade" data-bs-keyboard="false" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border border-danger">
+            <div class="modal-header">
+                <h4 class="modal-title" id="title-conversation">Coversation</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="conversation-list-card card">
+                            <div class="card-body">
+                                <div id="_partial_doc_chat" onload="">
+                                </div>
+                            </div>
+                            <div class="p-3 conversation-input border-top">
+                                <div class="row">
+                                    <div class="col">
+                                        <div>
+                                            <textarea class="form-control" placeholder="Enter Message..." id="txtChat" name="txtChat" onkeypress="OnEnterSend(event)"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="submit" onclick="OnSend()" class="btn btn-primary chat-send width-md waves-effect waves-light h-auto"><span class="d-none d-sm-inline-block me-2">Send</span> <i class="mdi mdi-send"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div style="text-align: right">
+                            <a href="#" class="btn btn-outline-danger waves-effect waves-light" onclick="OnClickCancelConversation()">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal_history_file" class="modal fade" data-bs-keyboard="false" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content border border-danger">
+            <div class="modal-header">
+                <h4 class="modal-title">History of files</h4>
+            </div>
+            <div class="modal-body">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered dt-responsive nowrap" id="table_history_doc" style="width: 100%">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>ID</th>
+                                    <th>Doc Type</th>
+                                    <th>Comment</th>
+                                    <th>Status</th>
+                                    <th>Uploader</th>
+                                    <th>Upload Date</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div style="text-align: right">
+                    <a href="#" class="btn btn-outline-danger waves-effect waves-light" onclick="OnClickCancelHistoryDoc()">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal_ltc" class="modal fade" data-bs-keyboard="false" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border border-danger">
+            <div class="modal-header">
+                <h4 class="modal-title">LTC</h4>
+            </div>
+            <div class="modal-body">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Remark</label>
+                                        @Html.TextAreaFor(model => model.Remark, new { @class = "form-control", @id = "Remark", @name = "Remark", @type = "text", @style = "color: black;" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Attachment</label>
+                                        <input type="file" class="form-control" id="txtFileLTC" name="txtFileLTC" accept="application/pdf" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div style="text-align: right">
+                    <a href="#" class="btn btn-outline-danger waves-effect waves-light" onclick="OnClickCancelLTC()">Cancel</a>
+                    <button type="button" class="btn btn-outline-warning waves-effect waves-light" onclick="OnConfirmLTCConf('POSTPONE')">Postpone & Send</button>
+                    <button type="button" class="btn btn-outline-primary waves-effect waves-light" onclick="OnConfirmLTCConf('CONFIRM')">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal_item_edit" class="modal fade" data-bs-keyboard="false" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border border-danger">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Wheat</h4>
+                @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>*@
+            </div>
+            <!-- Modal Body -->
+            <div class="modal-body">
+                @Html.HiddenFor(model => model.UID_TrxDtl)
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="row clearfix">
+                            <div class="col-sm-3">
+                                <div class="mb-3">
+                                    <label class="form-label">Wheat</label>
+                                    @Html.TextBoxFor(model => model.WheatCodeE, new { @class = "form-control", @id = "WheatCodeE", @name = "WheatCodeE", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="mb-3">
+                                    <label class="form-label">Qty</label>
+                                    @Html.TextBoxFor(model => model.WheatQtyE, new { @class = "form-control numeric", @id = "WheatQtyE", @name = "WheatQtyE", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="mb-3">
+                                    <label class="form-label">Final Qty</label>
+                                    @Html.TextBoxFor(model => model.FinalQty, new { @class = "form-control numeric", @id = "FinalQty", @name = "FinalQty" })
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="mb-3">
+                                    <label class="form-label">ETA Disport</label>
+                                    @Html.TextBoxFor(model => model.ETADisc, new { @class = "form-control", @id = "ETADisc", @name = "ETADisc" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row clearfix">
+                            <div class="col-sm-3">
+                                <div class="mb-3">
+                                    <label class="form-label">Port of loading</label>
+                                    @Html.DropDownListFor(model => model.LoadPort, Model.PortList, new { @class = "form-control", @id = "LoadPort", @name = "LoadPort" })
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="mb-3">
+                                    <label class="form-label">ETA Load Port</label>
+                                    @Html.TextBoxFor(model => model.ETALoad, "{0:dd/MM/yyyy}", new { @class = "form-control", @id = "ETALoad", @name = "ETALoad", @type = "text", @style = "color: black;" })
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="mb-3">
+                                    <label class="form-label">ETB Load Port</label>
+                                    @Html.TextBoxFor(model => model.ETBLoad, "{0:dd/MM/yyyy}", new { @class = "form-control", @id = "ETBLoad", @name = "ETBLoad", @type = "text", @style = "color: black;" })
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="mb-3">
+                                    <label class="form-label">ETD Load Port</label>
+                                    @Html.TextBoxFor(model => model.ETDLoad, "{0:dd/MM/yyyy}", new { @class = "form-control", @id = "ETDLoad", @name = "ETDLoad", @type = "text", @style = "color: black;" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div style="text-align: right">
+                    <a href="#" class="btn btn-outline-danger waves-effect waves-light" onclick="OnClickCancelUpdateItem()">Cancel</a>
+                    <button type="button" class="btn btn-outline-primary waves-effect waves-light" id="btnSubmit" onclick="return OnUpdateItem()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="/assets/libs/flatpickr/flatpickr.min.js"></script>
+    <script src="/assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/assets/js/pages/jquery.inputmask.bundle.min.js"></script>
+    <script src="~/assets/js/jquery.maskmoney.js"></script>
+
+    <script>
+        //$('.numeric').maskMoney();
+        $("#ETALoad").flatpickr({ dateFormat: "d-m-Y" });
+        $("#ETBLoad").flatpickr({ dateFormat: "d-m-Y" });
+        $("#ETDLoad").flatpickr({ dateFormat: "d-m-Y" });
+
+        function OnClickEditItem(id) {
+            var data = { id: id };
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("get_item", "shipper")',
+                data: data,
+                success: function(result) {
+                    if (result.success) {
+                        document.getElementById('UID_TrxDtl').value = result.UID;
+                        document.getElementById('WheatCodeE').value = result.WHEATNAME;
+                        document.getElementById('WheatQtyE').value = result.QTY;
+                        document.getElementById('FinalQty').value = result.FINALQTY;
+
+                        document.getElementById('ETADisc').value = result.ETADISC;
+                        document.getElementById('ETALoad').value = result.ETALOAD;
+                        document.getElementById('ETBLoad').value = result.ETBLOAD;
+                        document.getElementById('ETDLoad').value = result.ETDLOAD;
+
+
+                        var $select = $("#LoadPort").selectize();
+                        var selectize = $select[0].selectize;
+                        selectize.setValue(result.LOADPORT);
+
+                        $('#modal_item_edit').modal('show');
+                    } else {
+
+                    }
+                }
+            });
+        }
+
+        function OnUpdateItem() {
+            var isValid = confirm('Are you sure want to submit/update the transaction?');
+            if (isValid == false) {
+                return isValid;
+            }
+
+            var data = {
+                uid: document.getElementById('UID_TrxDtl').value,
+                wheat: '-',
+                port: document.getElementById('LoadPort').value,
+                qty: document.getElementById('FinalQty').value,
+                eta: document.getElementById('ETALoad').value,
+                etb: document.getElementById('ETBLoad').value,
+                etc: document.getElementById('ETDLoad').value,
+                eta2: document.getElementById('ETADisc').value
+            };
+            $.ajax({
+            type: 'post',
+            url: '@Url.Action("update_item", "home")',
+            data: data,
+            success: function(result) {
+                if (result.Success) {
+                    Swal.fire({
+                        title: result.Message,
+                        text: "",
+                        icon: "info",
+                        confirmButtonColor: "#28bb4b",
+                        confirmButtonText: "Ok"
+                    });
+
+                    load_table_modal_item(document.getElementById('PurchaseIDE').value);
+                    $('#modal_item_edit').modal('hide');
+                }
+                else {
+                    Swal.fire({
+                        title: result.Message,
+                        text: "",
+                        icon: "error",
+                        confirmButtonColor: "#28bb4b",
+                        confirmButtonText: "Ok"
+                    });
+                }
+            }
+            });
+            return true;
+        }
+
+        function OnClickCancelUpdateItem() {
+            $('#modal_item_edit').modal('hide');
+        }
+    </script>
+
+    <script>
+        $("#CommDiscDate").flatpickr({ dateFormat: "d-m-Y" });
+        $("#CompDiscDate").flatpickr({ dateFormat: "d-m-Y" });
+        $("#PayDueDate").flatpickr({ dateFormat: "d-m-Y" });
+        $("#Courier").selectize();
+
+        function OnRefreshModal() {
+            OnClickEdit(document.getElementById('PurchaseIDE').value);
+        }
+
+        function OnClickNewAWB() {
+            document.getElementById('UID_AWB').value = '';
+            document.getElementById('ModeTransaction').value = 'NEW';
+            $('#modal_upload_awb').modal('show');
+        }
+
+        function OnClickCancelAWB() {
+            $('#modal_upload_awb').modal('hide');
+        }
+
+
+        function OnClickSaveAWB() {
+            var formData = new FormData();
+            formData.append("PurchaseNo", document.getElementById('PurchaseIDE').value);
+            formData.append("Courier", document.getElementById('Courier').value);
+            formData.append("Awb", document.getElementById('AWB').value);
+            formData.append("Remark", document.getElementById('RemarkAWB').value);
+            formData.append("Uid", document.getElementById('UID_AWB').value);
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("submit_awb", "shipper")',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (result) {
+                    if (result.Success) {
+                        Swal.fire(
+                            result.Message,
+                            '',
+                            'info'
+                        );
+                    } else {
+                        Swal.fire(
+                            result.Message,
+                            '',
+                            'error'
+                        );
+                    }
+                }
+            });
+
+            $('#modal_upload_awb').modal('hide');
+            load_table_awb(document.getElementById('PurchaseIDE').value);
+        }
+
+
+        function OnClickUpdateVesselConf() {
+            Swal.fire({
+                title: 'Are you sure want to save this?',
+                text: "",
+                icon: "warning",
+                showCancelButton: !0,
+                confirmButtonColor: "#28bb4b",
+                cancelButtonColor: "#f34e4e",
+                confirmButtonText: "Continue"
+            }).then(function (e) {
+                e.value && OnClickUpdateVessel()
+            })
+        }
+
+        function OnClickUpdateVessel() {
+            var formData = new FormData();
+            formData.append("PurchaseNo", document.getElementById('PurchaseIDE').value);
+            formData.append("VesselName", document.getElementById('VesselName').value);
+            formData.append("VesselDetail", document.getElementById('VesselDetail').value);
+            formData.append("DemDes", document.getElementById('DemDes').value);
+            formData.append("AppointAgent", document.getElementById('AppointAgent').value);
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("update_shipper", "shipper")',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (result) {
+                    if (result.Success) {
+                        Swal.fire(
+                            result.Message,
+                            '',
+                            'info'
+                        );
+                    } else {
+                        Swal.fire(
+                            result.Message,
+                            '',
+                            'error'
+                        );
+                    }
+                }
+            });
+
+            $('#modal_upload_awb').modal('hide');
+            load_table_awb(document.getElementById('PurchaseIDE').value);
+        }
+
+        function OnClickEditAWB(uid) {
+            var data = { id: uid };
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("get_detail_awb", "shipper")',
+                data: data,
+                success: function(result) {
+                    if (result.success) {
+                        document.getElementById('UID_AWB').value = uid;
+                        document.getElementById('AWB').value = result.AWB;
+                        document.getElementById('RemarkAWB').value = result.REMARK;
+
+                        var $selectCourier = $("#Courier").selectize();
+                        var selectizeCourier = $selectCourier[0].selectize;
+                        selectizeCourier.setValue(result.COURIERCODE);
+                    } else {
+
+                    }
+                }
+            });
+            $('#modal_upload_awb').modal('show');
+        }
+
+        function OnClickDeleteAWBConf(uid) {
+             Swal.fire({
+                    title: 'Are you sure want to delete this?',
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: !0,
+                    confirmButtonColor: "#28bb4b",
+                    cancelButtonColor: "#f34e4e",
+                    confirmButtonText: "Continue"
+                }).then(function (e) {
+                    e.value && OnClickDeleteAWB(uid)
+                })
+        }
+
+        function OnClickDeleteAWB(uid) {
+            var url = '@Url.Action("delete_awb", "shipper")';
+            var data = { id: uid };
+              $.post(url, data, function (result) {
+                  Swal.fire(
+                      "Transaction successfully delete!",
+                      '',
+                      'info'
+                  );
+
+                  load_table_awb(document.getElementById('PurchaseIDE').value);
+            });
+            return true;
+        }
+
+        function OnProcessLTC() {
+            $('#modal_ltc').modal('show');
+        }
+
+        function OnConfirmLTCConf(type) {
+            Swal.fire({
+                title: 'Are you sure want to ' + type + ' the LTC?',
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: !0,
+                confirmButtonColor: "#28bb4b",
+                cancelButtonColor: "#f34e4e",
+                confirmButtonText: "Continue"
+            }).then(function (e) {
+                e.value && OnConfirmLTC(type)
+            })
+        }
+
+        function OnConfirmLTC(type) {
+            var Image = document.getElementById("txtFileLTC").files[0];
+
+
+            var formData = new FormData();
+            formData.append("Image", Image);
+            formData.append("PurchaseNo", document.getElementById('PurchaseIDE').value);
+            formData.append("Type", type);
+            formData.append("Remark", document.getElementById('Remark').value);
+
+            $.ajax({
+            type: 'POST',
+            url: '@Url.Action("update_ltc", "shipper")',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (result) {
+            if (result.Success) {
+                Swal.fire(
+                    result.Message,
+                    '',
+                    'info'
+                );
+
+                //$('#modal_upload_document').modal('hide');
+                //load_table_modal_doc(document.getElementById("PurchaseIDE2").value);
+                //$('#modal_header_edit').modal('show');
+            } else {
+                Swal.fire(
+                    result.Message,
+                    '',
+                    'error'
+                );
+            }
+            }
+            });
+            //$('#modal_ltc').modal('hide');
+            $('#modal_ltc').modal('hide');
+        }
+
+        function OnClickCancelLTC() {
+            $('#modal_ltc').modal('hide');
+        }
+
+        function OnClickSaveLTC() {
+            var data = {
+                PurchaseNo: document.getElementById('PurchaseIDE').value,
+                commDate: document.getElementById('CommDiscDate').value,
+                compDate: document.getElementById('CompDiscDate').value,
+                dueDate: document.getElementById('PayDueDate').value
+            };
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Action("update_ltc", "home")',
+                data: data,
+                success: function(result) {
+                    if (result.Success) {
+                        Swal.fire({
+                            title: result.Message,
+                            text: "",
+                            icon: "info",
+                            confirmButtonColor: "#28bb4b",
+                            confirmButtonText: "Ok"
+                        });
+                    }
+                    else {
+                        Swal.fire({
+                            title: result.Message,
+                            text: "",
+                            icon: "error",
+                            confirmButtonColor: "#28bb4b",
+                            confirmButtonText: "Ok"
+                        });
+                    }
+                    load_table_doc(document.getElementById("PurchaseIDE").value);
+                }
+            });
+            $('#modal_ltc').modal('hide');
+            return true;
+        }
+
+        function OnClickSave() {
+            var isValid = confirm('Are you sure want to submit/update the transaction?');
+            if (isValid == false) {
+                return isValid;
+            }
+        }
+
+        function OnEnterSend(e) {
+            if (e.keyCode === 13) {
+                e.preventDefault(); // Ensure it is only this code that runs
+                OnSend();
+            }
+
+        }
+
+        function OnSend() {
+            //alert(document.getElementById('UID_Chat').value);
+            //alert(document.getElementById('txtChat').value);
+            var data = { uid: document.getElementById('UID_Chat').value, remark: document.getElementById('txtChat').value };
+            $.ajax({
+                type: 'post',
+                url: '@Url.Action("insert_chat", "home")',
+                data: data,
+                success: function(result) {
+                    if (result.Success) {
+                        document.getElementById('txtChat').value = '';
+                        $('#_partial_doc_chat').load('@Url.Action("_partial_doc_chat", "home")?uid=' + document.getElementById('UID_Chat').value);
+
+
+                        var d = $('#divChat');
+                        d.scrollTop(d.prop("scrollHeight"));
+                    }
+                    else {
+                        Swal.fire({
+                            title: result.Message,
+                            text: "",
+                            icon: "error",
+                            confirmButtonColor: "#28bb4b",
+                            confirmButtonText: "Ok"
+                        });
+                    }
+                    load_table_modal_doc(document.getElementById("PurchaseIDE").value);
+                }
+            });
+            return true;
+        }
+
+
+        function OnClickEdit(id) {
+            var data = { id: id };
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("get_header_trx", "shipper")',
+                data: data,
+                success: function(result) {
+                    if (result.success) {
+
+                        document.getElementById('modalEditTitle').innerHTML = 'Purchase Wheat - View (#' + result.PurchaseNo + ') - SHIPPER';
+                        document.getElementById('PurchaseIDE').value = result.PurchaseIDE;
+                        document.getElementById('PurchaseNoE').value = result.PurchaseNo;
+                        document.getElementById('TradeQtyE').value = result.TradeQty_C;
+                        document.getElementById('ShipmentFromE').value = result.ShipmentFrom;
+                        document.getElementById('ShipmentToE').value = result.ShipmentTo;
+                        document.getElementById('RemarkE').value = result.Remark;
+
+
+                        document.getElementById('OriginE').value = result.Origin_Name;
+                        document.getElementById('ShipperE').value = result.Shipper_Name;
+                        document.getElementById('SellerE').value = result.Seller_Name;
+
+                        //for (element of result.DocRequired.split(",")) {
+                        //    $("#txtChkE" + element).prop("checked", true);
+                        //}
+                        GetVesselInfo(id);
+                        load_table_modal_item(id);
+                        load_table_modal_doc(id);
+                        load_table_awb(id);
+
+                        //document.getElementById('CommDiscDate').value = result.CommDiscDate;
+                        //document.getElementById('CompDiscDate').value = result.CompDiscDate;
+                        document.getElementById('CommDiscDateH').value = result.CommDiscDate;
+                        document.getElementById('CompDiscDateH').value = result.CompDiscDate;
+                        document.getElementById('StatusDesDem').value = result.StatusDesDem;
+                        document.getElementById('StatusDesDemConfirm').value = result.StatusDesDemConfirm;
+
+                        if (result.StatusDesDem == '') {
+                            document.getElementById("btnProcessLTC").style.display = "none";
+                            document.getElementById('StatusDesDemConfirm').value = '';
+                            document.getElementById("title-ltc").innerHTML = "LTC";
+                        }
+                        else {
+                            if (result.StatusDesDemConfirm == 'WAITING APPROVED') {
+                                document.getElementById("title-ltc").innerHTML = "LTC - NEED CONFIRM";
+                                document.getElementById("btnProcessLTC").style.display = "block";
+                            }
+                            else {
+                                document.getElementById("title-ltc").innerHTML = "LTC";
+                                document.getElementById("btnProcessLTC").style.display = "none";
+                            }
+                        }
+                        //if (result.Confirm == "Waiting Approved") {
+                        //    document.getElementById('txtStatusLTC').style.color = "blue";
+                        //}
+                        //if (result.Confirm == "Approved") {
+                        //    document.getElementById('txtStatusLTC').style.color = "green";
+                        //}
+
+                        $('#modal_header_edit').modal('show');
+                    } else {
+
+                    }
+                }
+            });
+        }
+
+        function GetVesselInfo(id) {
+            var data = { id: id };
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("get_header_vessel", "shipper")',
+                data: data,
+                success: function(result) {
+                    if (result.success) {
+                        document.getElementById('VesselName').value = result.VESSELNAME;
+                        document.getElementById('VesselDetail').value = result.VESSELDETAIL;
+                        document.getElementById('DemDes').value = result.RATES;
+                        document.getElementById('AppointAgent').value = result.APPOINTAGENT;
+                    } else {
+
+                    }
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            load_table();
+        });
+
+        function load_table() {
+            var table = $('#table_data').DataTable();
+            table.destroy();
+            $('#table_data').DataTable({
+                "ajax": {
+                    "url": '@Url.Action("load_data_index", "shipper")?' + "fromDate=" + document.getElementById('DateFrom').value + "&toDate=" + document.getElementById('DateTo').value,
+                    "type": "GET",
+                    "datatype": "json",
+                    dataSrc: function(data) {
+                        return $.parseJSON(data.data);
+                    }
+                },
+                "columns": [
+                    {
+                        "data": null, "autoWidth": true,
+                        mRender: function (data, type, row) {
+                            if (row.STATUS == 'ACTIVE') {
+                                return '<span data-toggle="tooltip" title="Edit" style="cursor: pointer" onclick="OnClickEdit(\'' + row.PURCHASENO2 + '\');"><i class="dripicons-document-edit"></i></span>';
+                            }
+                            else {
+                                return '';
+                            }
+                        }
+                    },
+                    {
+                        "data": "PNO", "autoWidth": true,
+                    },
+                    {
+                        "data": "DATE", "autoWidth": true,
+                    },
+                    {
+                        "data": "TRADEQTY", "autoWidth": true,
+                    },
+                    {
+                        "data": "SHIPMENTFROM", "autoWidth": true,
+                    },
+                    {
+                        "data": "SHIPMENTTO", "autoWidth": true,
+                    },
+                    {
+                        "data": "ORIGIN_NAME", "autoWidth": true,
+                    },
+                    {
+                        "data": "SHIPPER_NAME", "autoWidth": true,
+                    },
+                    {
+                        "data": "SELLER_NAME", "autoWidth": true,
+                    },
+                    {
+                        "data": "REMARK", "autoWidth": true,
+                    },
+                    {
+                        "data": "CLOSED", "autoWidth": true,
+                        mRender: function (data, type, row) {
+                            if (row.CLOSED == false) {
+                                return '<span style="color: #60b1ff"> Open </span>';
+                            }
+                            else {
+                                return '<span style="color: red"> Close </span>';
+                            }
+                        }
+                    },
+                    {
+                        "data": "UPDBY", "autoWidth": true,
+                    },
+                    {
+                        "data": "UPDDATE", "autoWidth": true,
+                    },
+                    {
+                        "data": "PURCHASENO2", "autoWidth": true, "visible": false,
+                    },
+                    {
+                        "data": "ORIGIN", "autoWidth": true, "visible": false,
+                    },
+                    {
+                        "data": "SHIPPER", "autoWidth": true, "visible": false,
+                    },
+                    {
+                        "data": "SELLER", "autoWidth": true, "visible": false,
+                    },
+                ],
+                "bLengthChange": false,
+                "bFilter": true,
+                "order": [[1, "desc"]],
+                scrollX: true,
+            });
+            return true;
+        }
+
+        function load_table_modal_item(id) {
+            var table = $('#table_data_item').DataTable();
+            table.destroy();
+            $('#table_data_item').DataTable({
+                "ajax": {
+                    "url": '@Url.Action("load_modal_data_item", "shipper")?' + "id=" + id,
+                    "type": "GET",
+                    "datatype": "json",
+                    dataSrc: function(data) {
+                        return $.parseJSON(data.data);
+                    }
+                },
+                "columns": [
+                    {
+                        "data": null, "autoWidth": true,
+                        mRender: function (data, type, row) {
+                            return '<span data-toggle="tooltip" title="Edit" style="cursor: pointer" onclick="OnClickEditItem(\'' + row.UID + '\');"><i class="dripicons-document-edit"></i></span>';
+                        }
+                    },
+                    {
+                        "data": "WHEATNAME", "autoWidth": true,
+                    },
+                    {
+                        "data": "QTY_C", "autoWidth": true,
+                    },
+                    {
+                        "data": "FQTY_C", "autoWidth": true,
+                    },
+                    {
+                        "data": "LOADPORTNAME", "autoWidth": true,
+                    },
+                    {
+                        "data": "ETALOAD", "autoWidth": true,
+                    },
+                    {
+                        "data": "ETBLOAD", "autoWidth": true,
+                    },
+                    {
+                        "data": "ETDLOAD", "autoWidth": true,
+                    },
+                    {
+                        "data": "DISCPORTNAME", "autoWidth": true,
+                    },
+                    {
+                        "data": "ETADISC", "autoWidth": true,
+                    },
+                    {
+                        "data": "ETBDISC", "autoWidth": true,
+                    },
+                    {
+                        "data": "ETCDISC", "autoWidth": true,
+                    },
+                ],
+                "bLengthChange": false,
+                "bFilter": false,
+                "bPaginate": false,
+                "bInfo": false,
+                "order": [[1, "asc"]],
+            });
+        }
+
+        function load_table_modal_doc(id) {
+            var table = $('#table_data_doc').DataTable();
+            table.destroy();
+            $('#table_data_doc').DataTable({
+                "ajax": {
+                    "url": '@Url.Action("load_modal_data_doc", "shipper")?' + "id=" + id,
+                    "type": "GET",
+                    "datatype": "json",
+                    dataSrc: function(data) {
+                        return $.parseJSON(data.data);
+                    }
+                },
+                "columns": [
+                    {
+                        "data": null, "autoWidth": false,
+                        mRender: function (data, type, row) {
+
+
+                            if (row.STATUS_CODE == "1") {
+                                if (row.AUTH == "1") {
+                                    if (row.TOTAL_CHAT != "0") {
+                                        if (row.DOCTYPE_ID == "31") {
+                                            return '<div style="text-align: center;font-size: 20px"><span data-toggle="tooltip" title="Edit" style="cursor: pointer" onclick="OnDocEdit(\'' + row.UID + '\');"><i class="dripicons-document-edit"></i></span>&nbsp;&nbsp;<span data-toggle="tooltip" title="Download" style="cursor: pointer" onclick="OnDownload(\'' + row.UID + '\');"><i class="dripicons-cloud-download"></i></span>&nbsp;&nbsp;<span class="position-relative" data-toggle="tooltip" title="Conversation" style="cursor: pointer" onclick="OnConversation(\'' + row.UID + '\',\'' + row.DOCTYPE + '\');"><i class="dripicons-conversation"></i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">' + row.TOTAL_CHAT + '</span></span>&nbsp;&nbsp;<span data-toggle="tooltip" title="Delete" style="cursor: pointer" onclick="OnConfirmDeleteDocument(\'' + row.UID + '\');"><i class="dripicons-document-delete"></i></span>&nbsp;&nbsp;<span data-toggle="tooltip" title="History Files" style="cursor: pointer" onclick="load_table_history_doc(\'' + row.DOCTYPE_ID + '\',\'' + row.UID + '\');"><i class="dripicons-box"></i></span></div>';
+                                        }
+                                        else {
+                                            return '<div style="text-align: center;font-size: 20px"><span data-toggle="tooltip" title="Download" style="cursor: pointer" onclick="OnDownload(\'' + row.UID + '\');"><i class="dripicons-cloud-download"></i></span>&nbsp;&nbsp;<span class="position-relative" data-toggle="tooltip" title="Conversation" style="cursor: pointer" onclick="OnConversation(\'' + row.UID + '\',\'' + row.DOCTYPE + '\');"><i class="dripicons-conversation"></i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">' + row.TOTAL_CHAT + '</span></span>&nbsp;&nbsp;<span data-toggle="tooltip" title="Delete" style="cursor: pointer" onclick="OnConfirmDeleteDocument(\'' + row.UID + '\');"><i class="dripicons-document-delete"></i></span>&nbsp;&nbsp;<span data-toggle="tooltip" title="History Files" style="cursor: pointer" onclick="load_table_history_doc(\'' + row.DOCTYPE_ID + '\',\'' + row.UID + '\');"><i class="dripicons-box"></i></span></div>';
+
+                                        }
+                                    }
+                                    else {
+                                        if (row.DOCTYPE_ID == "31") {
+                                            return '<div style="text-align: center;font-size: 20px"><span data-toggle="tooltip" title="Edit" style="cursor: pointer" onclick="OnDocEdit(\'' + row.UID + '\');"><i class="dripicons-document-edit"></i></span>&nbsp;&nbsp;<span data-toggle="tooltip" title="Download" style="cursor: pointer" onclick="OnDownload(\'' + row.UID + '\');"><i class="dripicons-cloud-download"></i></span>&nbsp;&nbsp;<span data-toggle="tooltip" title="Conversation" style="cursor: pointer" onclick="OnConversation(\'' + row.UID + '\',\'' + row.DOCTYPE + '\');"><i class="dripicons-conversation"></i></span>&nbsp;&nbsp;<span data-toggle="tooltip" title="Delete" style="cursor: pointer" onclick="OnConfirmDeleteDocument(\'' + row.UID + '\');"><i class="dripicons-document-delete"></i></span>&nbsp;&nbsp;<span data-toggle="tooltip" title="History Files" style="cursor: pointer" onclick="load_table_history_doc(\'' + row.DOCTYPE_ID + '\',\'' + row.UID + '\');"><i class="dripicons-box"></i></span></div>';
+                                        }
+                                        else {
+                                            return '<div style="text-align: center;font-size: 20px"><span data-toggle="tooltip" title="Download" style="cursor: pointer" onclick="OnDownload(\'' + row.UID + '\');"><i class="dripicons-cloud-download"></i></span>&nbsp;&nbsp;<span data-toggle="tooltip" title="Conversation" style="cursor: pointer" onclick="OnConversation(\'' + row.UID + '\',\'' + row.DOCTYPE + '\');"><i class="dripicons-conversation"></i></span>&nbsp;&nbsp;<span data-toggle="tooltip" title="Delete" style="cursor: pointer" onclick="OnConfirmDeleteDocument(\'' + row.UID + '\');"><i class="dripicons-document-delete"></i></span>&nbsp;&nbsp;<span data-toggle="tooltip" title="History Files" style="cursor: pointer" onclick="load_table_history_doc(\'' + row.DOCTYPE_ID + '\',\'' + row.UID + '\');"><i class="dripicons-box"></i></span></div>';
+                                        }
+                                    }
+                                }
+                                else {
+                                    if (row.TOTAL_CHAT != "0") {
+                                        return '<div style="text-align: center;font-size: 20px"><span data-toggle="tooltip" title="Download" style="cursor: pointer" onclick="OnDownload(\'' + row.UID + '\');"><i class="dripicons-cloud-download"></i></span>&nbsp;&nbsp;<span class="position-relative" data-toggle="tooltip" title="Conversation" style="cursor: pointer" onclick="OnConversation(\'' + row.UID + '\',\'' + row.DOCTYPE + '\');"><i class="dripicons-conversation"></i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">' + row.TOTAL_CHAT + '</span></span>&nbsp;&nbsp;<span data-toggle="tooltip" title="History Files" style="cursor: pointer" onclick="load_table_history_doc(\'' + row.DOCTYPE_ID + '\',\'' + row.UID + '\');"><i class="dripicons-box"></i></span></div>';
+                                    }
+                                    else {
+                                        return '<div style="text-align: center;font-size: 20px"><span data-toggle="tooltip" title="Download" style="cursor: pointer" onclick="OnDownload(\'' + row.UID + '\');"><i class="dripicons-cloud-download"></i></span>&nbsp;&nbsp;<span data-toggle="tooltip" title="Conversation" style="cursor: pointer" onclick="OnConversation(\'' + row.UID + '\',\'' + row.DOCTYPE + '\');"><i class="dripicons-conversation"></i></span>&nbsp;&nbsp;<span data-toggle="tooltip" title="History Files" style="cursor: pointer" onclick="load_table_history_doc(\'' + row.DOCTYPE_ID + '\',\'' + row.UID + '\');"><i class="dripicons-box"></i></span></div>';
+                                    }
+                                }
+                            }
+                            else {
+                                if (row.TOTAL_CHAT != "0") {
+                                    return '<div style="text-align: center;font-size: 20px"><span data-toggle="tooltip" title="Download" style="cursor: pointer" onclick="OnDownload(\'' + row.UID + '\');"><i class="dripicons-cloud-download"></i></span>&nbsp;&nbsp;<span class="position-relative" data-toggle="tooltip" title="Conversation" style="cursor: pointer" onclick="OnConversation(\'' + row.UID + '\',\'' + row.DOCTYPE + '\');"><i class="dripicons-conversation"></i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">' + row.TOTAL_CHAT + '</span></span>&nbsp;&nbsp;<span data-toggle="tooltip" title="History Files" style="cursor: pointer" onclick="load_table_history_doc(\'' + row.DOCTYPE_ID + '\',\'' + row.UID + '\');"><i class="dripicons-box"></i></span></div>';
+                                }
+                                else {
+                                    return '<div style="text-align: center;font-size: 20px"><span data-toggle="tooltip" title="Download" style="cursor: pointer" onclick="OnDownload(\'' + row.UID + '\');"><i class="dripicons-cloud-download"></i></span>&nbsp;&nbsp;<span data-toggle="tooltip" title="Conversation" style="cursor: pointer" onclick="OnConversation(\'' + row.UID + '\',\'' + row.DOCTYPE + '\');"><i class="dripicons-conversation"></i></span>&nbsp;&nbsp;<span data-toggle="tooltip" title="History Files" style="cursor: pointer" onclick="load_table_history_doc(\'' + row.DOCTYPE_ID + '\',\'' + row.UID + '\');"><i class="dripicons-box"></i></span></div>';
+                                }
+                            }
+                        }
+                    },
+                    //{
+                    //    "data": "UID", "autoWidth": true,
+                    //},
+                    {
+                        "data": "DOCTYPE", "autoWidth": true,
+                    },
+                    {
+                        "data": "REMARK", "autoWidth": true, "visible": false,
+                    },
+                    {
+                        "data": "STATUS_NAME", "autoWidth": true,
+                        mRender: function (data, type, row) {
+                            if (row.STATUS_CODE == '1') {
+                                return '<span style="color: #F4D03F"> ' + row.STATUS_NAME + ' </span>';
+                            }
+                            else if (row.STATUS_CODE == '2') {
+                                return '<span style="color: red"> ' + row.STATUS_NAME + ' </span>';
+                            }
+                            else if (row.STATUS_CODE == '3') {
+                                return '<span style="color: green"> ' + row.STATUS_NAME + ' </span>';
+                            }
+                            else {
+                                return '<span style="color: #60b1ff"> ' + row.STATUS_NAME + ' </span>';
+                            }
+                        }
+                    },
+                    {
+                        "data": "UPLOADER", "autoWidth": true,
+                    },
+                    {
+                        "data": "UPLOAD_DATE", "autoWidth": true,
+                    },
+                    {
+                        "data": "DOCTYPE_ID", "autoWidth": true, "visible": false,
+                    },
+                    {
+                        "data": "STATUS_CODE", "autoWidth": true, "visible": false,
+                    },
+                ],
+                "bLengthChange": false,
+                "bFilter": false,
+                "bPaginate": false,
+                "bInfo": false,
+                "order": [[1, "desc"]],
+                //columnDefs: [
+                //    {
+                //        "width": "150px", "targets": [0]
+                //    }
+                //]
+            });
+        }
+
+        function load_table_history_doc(type, uid) {
+            $('#modal_history_file').modal('show');
+            var pno = document.getElementById('PurchaseIDE').value;
+            var table = $('#table_history_doc').DataTable();
+            table.destroy();
+            $('#table_history_doc').DataTable({
+                "ajax": {
+                    "url": '@Url.Action("load_modal_history_doc", "shipper")?pno=' + pno + '&type=' + type + '&id=' + uid,
+                    "type": "GET",
+                    "datatype": "json",
+                    dataSrc: function(data) {
+                        return $.parseJSON(data.data);
+                    }
+                },
+                "columns": [
+                    {
+                        "data": null, "autoWidth": false,
+                        mRender: function (data, type, row) {
+                            return '<div style="text-align: center;font-size: 20px"><span data-toggle="tooltip" title="Download" style="cursor: pointer" onclick="OnDownload(\'' + row.UID + '\');"><i class="dripicons-cloud-download"></i></span></div>';
+                        }
+                    },
+                    {
+                        "data": "UID", "autoWidth": true,
+                    },
+                    {
+                        "data": "DOCTYPE2", "autoWidth": true,
+                    },
+                    {
+                        "data": "REMARK", "autoWidth": true, "visible": false,
+                    },
+                    {
+                        "data": "STATUS_NAME", "autoWidth": true,
+                        mRender: function (data, type, row) {
+                            if (row.STATUS_CODE == '1') {
+                                return '<span style="color: #F4D03F"> ' + row.STATUS_NAME + ' </span>';
+                            }
+                            else if (row.STATUS_CODE == '2') {
+                                return '<span style="color: red"> ' + row.STATUS_NAME + ' </span>';
+                            }
+                            else if (row.STATUS_CODE == '3') {
+                                return '<span style="color: green"> ' + row.STATUS_NAME + ' </span>';
+                            }
+                            else {
+                                return '<span style="color: #60b1ff"> ' + row.STATUS_NAME + ' </span>';
+                            }
+                        }
+                    },
+                    {
+                        "data": "UPLOADER", "autoWidth": true,
+                    },
+                    {
+                        "data": "UPLOAD_DATE", "autoWidth": true,
+                    },
+                    {
+                        "data": "DOCTYPE_ID", "autoWidth": true, "visible": false,
+                    },
+                    {
+                        "data": "STATUS_CODE", "autoWidth": true, "visible": false,
+                    },
+                ],
+                "bLengthChange": false,
+                "bFilter": false,
+                "bPaginate": false,
+                "bInfo": false,
+                "order": [[1, "desc"]],
+            });
+        }
+
+        function load_table_awb(id) {
+            var table = $('#table_data_awb').DataTable();
+            table.destroy();
+            $('#table_data_awb').DataTable({
+            "ajax": {
+                "url": '@Url.Action("load_modal_awb", "home")?pno=' + id,
+                "type": "GET",
+                "datatype": "json",
+                dataSrc: function(data) {
+                    return $.parseJSON(data.data);
+                }
+            },
+            "columns": [
+                {
+                    "data": "UID", "autoWidth": true,
+                    mRender: function (data, type, row) {
+                        return '<div style="text-align: center;font-size: 20px"><span data-toggle="tooltip" title="Edit" style="cursor: pointer" onclick="OnClickEditAWB(\'' + row.UID + '\');"><i class="dripicons-document-edit"></i></span>&nbsp;&nbsp;<span data-toggle="tooltip" title="Delete" style="cursor: pointer" onclick="OnClickDeleteAWBConf(\'' + row.UID + '\');"><i class="dripicons-trash"></i></span></div>';
+                    }
+                },
+                {
+                    "data": "AWB", "autoWidth": true,
+                },
+                {
+                    "data": "COURIER", "autoWidth": true,
+                },
+                {
+                    "data": "REMARK", "autoWidth": true,
+                },
+                {
+                    "data": "UPDBY", "autoWidth": true,
+                },
+                {
+                    "data": "UPDDATE", "autoWidth": true,
+                },
+            ],
+            "bLengthChange": false,
+            "bFilter": false,
+            "bPaginate": false,
+            "bInfo": false,
+            "order": [[1, "desc"]],
+            });
+        }
+
+        $('#modal_conversation').on('shown.bs.modal', function () {
+            document.getElementById('txtChat').value = '';
+            document.getElementById('txtChat').focus();
+        })
+
+        $('#modal_conversation').on('hide.bs.modal', function () {
+            load_table_modal_doc(document.getElementById('PurchaseIDE').value);
+        })
+
+        function OnConversation(id, type) {
+            document.getElementById('title-conversation').innerHTML = 'Conversation (' + type + ')';
+            $('#_partial_doc_chat').load('@Url.Action("_partial_doc_chat", "home")?uid=' + id);
+            $('#modal_conversation').modal('show');
+        }
+
+        function OnDownload(id_) {
+            var data = { Id: id_ };
+            $.ajax({
+                type: 'post',
+                url: '@Url.Action("download", "shipper")',
+                data: data,
+                success: function(result) {
+                    if (!result.Success) {
+                        Swal.fire({
+                            title: result.Message,
+                            text: "",
+                            icon: "error",
+                            confirmButtonColor: "#28bb4b",
+                            confirmButtonText: "Ok"
+                        });
+                    }
+                }
+            });
+        }
+
+        function OnConfirmDeleteDocument(id_) {
+            Swal.fire({
+                title: 'Are you sure want to delete this document?',
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: !0,
+                confirmButtonColor: "#28bb4b",
+                cancelButtonColor: "#f34e4e",
+                confirmButtonText: "Continue"
+            }).then(function (e) {
+                e.value && OnDeleteDocument(id_)
+            })
+            return true;
+        }
+
+        function OnDeleteDocument(id_) {
+            var data = { Id: id_, purchaseno: document.getElementById("PurchaseIDE").value };
+            $.ajax({
+                type: 'post',
+                url: '@Url.Action("delete_doc", "shipper")',
+                data: data,
+                success: function(result) {
+                    if (result.Success) {
+                        Swal.fire({
+                            title: result.Message,
+                            text: "",
+                            icon: "info",
+                            confirmButtonColor: "#28bb4b",
+                            confirmButtonText: "Ok"
+                        });
+                    }
+                    else {
+                        Swal.fire({
+                            title: result.Message,
+                            text: "",
+                            icon: "error",
+                            confirmButtonColor: "#28bb4b",
+                            confirmButtonText: "Ok"
+                        });
+                    }
+                    load_table_modal_doc(document.getElementById("PurchaseIDE").value);
+                }
+            });
+            return true;
+        }
+
+        function OnClickUpload() {
+            $('#_partial_upload_doc').load('@Url.Action("_partial_upload_doc", "home")?id=' + document.getElementById('PurchaseIDE').value);
+            document.getElementById('PurchaseIDE2').value = document.getElementById('PurchaseIDE').value;
+            //$('#modal_header_edit').modal('hide');
+            $('#modal_upload_document').modal('show');
+        }
+
+        function OnClickCancelUpload() {
+            $('#modal_upload_document').modal('hide');
+        }
+
+        $('#modal_upload_document').on('hide.bs.modal', function () {
+            load_table_modal_doc(document.getElementById('PurchaseIDE').value);
+        })
+
+        function OnClickCancelConversation() {
+            var chat = document.getElementById('txtChat').value.trim();
+            if (chat != "") {
+                var isValid = confirm('Changes that you made may not be saved, leave site?');
+                if (isValid == false) {
+                    return isValid;
+                }
+            }
+            $('#modal_conversation').modal('hide');
+            return true;
+        }
+
+        function OnClickCancelHistoryDoc() {
+            $('#modal_history_file').modal('hide');
+        }
+    </script>
+
+}
+
